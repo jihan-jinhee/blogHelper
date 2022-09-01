@@ -7,22 +7,36 @@ from PIL import Image
 class MainWindow(QtWidgets.QDialog):
     def __init__(self, parent = None):
         super().__init__(parent)
+        self.folderpath = None
         self.ui = uic.loadUi("./resources//MainWidget.ui")
+        self.folderChooseUI = uic.loadUi("./resources//folderChoose.ui")
         self.progressBarUI = uic.loadUi("./resources//progressbar.ui")
         self.progressBarUI.setWindowFlag(Qt.WindowStaysOnTopHint)
         self.setUp()
         self.ui.show()
 
     def setUp(self):
-        self.ui.btn_watermark.clicked.connect(self.btn_watermarkClicked)
+        self.ui.btn_watermark.clicked.connect(self.btn_watermarkClickedUI)
+        self.folderChooseUI.btn_folderChoose.clicked.connect(self.btn_folderChooseClicked)
+        self.progressBarUI.btn_watermark.clicked.connect(self.btn_watermarkClicked)
+
+    def btn_watermarkClickedUI(self):
+        self.folderChooseUI.show()
+
+    def btn_folderChooseClicked(self):
+        self.folderpath = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select Folder')
+        if self.folderpath is None or self.folderpath == "":
+            return
+        self.folderChooseUI.label_folderPath.setText(self.folderpath)
+        self.progressBarUI.show()
 
     def btn_watermarkClicked(self):
-        self.progressBarUI.show()
-        folderpath = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select Folder')
-        if folderpath is None or folderpath == "":
+        self.progressBarUI.progressBar.setValue(0)
+        if self.folderpath is None or self.folderpath == "":
+            self.progressBarUI.close()
             return
 
-        files = os.listdir(folderpath)
+        files = os.listdir(self.folderpath)
         count = 0
         for file in files:
             if 'png' in file or 'jpg' in file:
@@ -33,12 +47,14 @@ class MainWindow(QtWidgets.QDialog):
         for file in files:
             if 'png' in file or 'jpg' in file:
                 count +=1
-                imagePath = folderpath + "\\" + file
+                imagePath = self.folderpath + "\\" + file
                 imgResult = self.makeWatermark(imagePath)
                 self.saveResult(imgResult, file)
-                time.sleep(2)
                 self.progressBarUI.progressBar.setValue(progressPitch * count)
+                time.sleep(2)
 
+
+        self.folderChooseUI.close()
         self.progressBarUI.close()
 
     def makeWatermark(self, imagePath):
