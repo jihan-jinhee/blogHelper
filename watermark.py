@@ -40,7 +40,7 @@ class Watermark(QtWidgets.QDialog):
         for file in files:
             if 'png' in file or 'jpg' in file:
                 count += 1
-        progressPitch = int(100 / count)
+        progressPitch = 100 / count
 
         count = 0
         for file in files:
@@ -49,9 +49,7 @@ class Watermark(QtWidgets.QDialog):
                 imagePath = self.folderpath + "\\" + file
                 imgResult = self.makeWatermark(imagePath)
                 self.saveResult(imgResult, file)
-                self.progressBarUI.progressBar.setValue(progressPitch * count)
-                time.sleep(2)
-
+                self.progressBarUI.progressBar.setValue(int(progressPitch * count))
 
         self.folderChooseUI.close()
         self.progressBarUI.close()
@@ -80,7 +78,7 @@ class Watermark(QtWidgets.QDialog):
         return img_resizeWatermark, resized_Xdim, resized_Ydim
 
     def saveResult(self, imgResult, fileName):
-        resultPath = os.getcwd() + "\\결과폴더"
+        resultPath = self.folderpath + "\\워터마크 사진폴더"
         if not os.path.exists(resultPath):
             os.mkdir(resultPath)
 
