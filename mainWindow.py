@@ -1,88 +1,22 @@
-import time
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtCore import Qt
-import os
-from PIL import Image
+from watermark import Watermark
+import webbrowser
 
 class MainWindow(QtWidgets.QDialog):
     def __init__(self, parent = None):
         super().__init__(parent)
-        self.folderpath = None
         self.ui = uic.loadUi("./resources//MainWidget.ui")
-        self.folderChooseUI = uic.loadUi("./resources//folderChoose.ui")
-        self.progressBarUI = uic.loadUi("./resources//progressbar.ui")
-        self.progressBarUI.setWindowFlag(Qt.WindowStaysOnTopHint)
         self.setUp()
         self.ui.show()
 
     def setUp(self):
         self.ui.btn_watermark.clicked.connect(self.btn_watermarkClickedUI)
-        self.folderChooseUI.btn_folderChoose.clicked.connect(self.btn_folderChooseClicked)
-        self.progressBarUI.btn_watermark.clicked.connect(self.btn_watermarkClicked)
+        self.ui.label_watermark.mousePressEvent = self.openWeb
 
     def btn_watermarkClickedUI(self):
-        self.folderChooseUI.show()
+        watermarkUI = Watermark()
+        watermarkUI.folderChooseUI.show()
+        watermarkUI.folderChooseUI.exec()
 
-    def btn_folderChooseClicked(self):
-        self.folderpath = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select Folder')
-        if self.folderpath is None or self.folderpath == "":
-            return
-        self.folderChooseUI.label_folderPath.setText(self.folderpath)
-        self.progressBarUI.show()
-
-    def btn_watermarkClicked(self):
-        self.progressBarUI.progressBar.setValue(0)
-        if self.folderpath is None or self.folderpath == "":
-            self.progressBarUI.close()
-            return
-
-        files = os.listdir(self.folderpath)
-        count = 0
-        for file in files:
-            if 'png' in file or 'jpg' in file:
-                count += 1
-        progressPitch = int(100 / count)
-
-        count = 0
-        for file in files:
-            if 'png' in file or 'jpg' in file:
-                count +=1
-                imagePath = self.folderpath + "\\" + file
-                imgResult = self.makeWatermark(imagePath)
-                self.saveResult(imgResult, file)
-                self.progressBarUI.progressBar.setValue(progressPitch * count)
-                time.sleep(2)
-
-
-        self.folderChooseUI.close()
-        self.progressBarUI.close()
-
-    def makeWatermark(self, imagePath):
-        img_watermark = None
-        img_watermarkPath = os.getcwd() + "\\resources\\watermark.png"
-        if os.path.exists(img_watermarkPath):
-            img_watermark = Image.open(img_watermarkPath)
-
-            img_origin = Image.open(imagePath)
-            Xdim_origin, Ydim_origin = img_origin.size
-            resizeRatio = Xdim_origin / 1000
-
-            img_resizeWatermark, resized_Xdim, resized_Ydim = self.resizeWatermark(resizeRatio, img_watermark)
-
-            image = Image.open(imagePath)
-            image.paste(img_resizeWatermark, (Xdim_origin - resized_Xdim, Ydim_origin - resized_Ydim))
-            return image
-
-    def resizeWatermark(self, resizeRatio, img_watermark):
-        Xdim_watermark, Ydim_watermark = img_watermark.size
-        resized_Xdim = int(Xdim_watermark * resizeRatio)
-        resized_Ydim = int(Ydim_watermark * resizeRatio)
-        img_resizeWatermark = img_watermark.resize((resized_Xdim, resized_Ydim))
-        return img_resizeWatermark, resized_Xdim, resized_Ydim
-
-    def saveResult(self, imgResult, fileName):
-        resultPath = os.getcwd() + "\\결과폴더"
-        if not os.path.exists(resultPath):
-            os.mkdir(resultPath)
-
-        imgResult.save(resultPath + "\\" + fileName)
+    def openWeb(self, event):
+        webbrowser.open("https://blog.naver.com/hanjinhee502")
