@@ -52,8 +52,11 @@ class Watermark(QtWidgets.QDialog):
                 self.saveResult(imgResult, file)
                 self.progressBarUI.progressBar.setValue(int(progressPitch * count))
 
-                processingTime = time.time() - startTime
-                self.showTime(int(processingTime))
+                processingTime = int(time.time() - startTime)
+                remainCount = totalCount - count
+                remainTpropotion = remainCount / count
+                remainTime = int(processingTime * remainTpropotion)
+                self.showTime(processingTime, remainTime)
                 self.progressBarUI.label_processing.setText(str(count) + "/" + str(totalCount))
 
         self.folderChooseUI.close()
@@ -89,10 +92,15 @@ class Watermark(QtWidgets.QDialog):
 
         imgResult.save(resultPath + "\\" + fileName)
 
-    def showTime(self, time):
+    def showTime(self, time, remainTime):
         timeSec = int(time % 60)
         timeMin = int(time / 60)
         timeHour = int(time / 3600)
+
+        rTimeSec = int(remainTime % 60)
+        rTimeMin = int(remainTime / 60)
+        rTimeHour = int(remainTime / 3600)
+
         if timeHour == 0:
             if timeMin == 0:
                 self.progressBarUI.label_processTime.setText(str(timeSec) + "초")
@@ -103,16 +111,12 @@ class Watermark(QtWidgets.QDialog):
         else:
             self.progressBarUI.label_processTime.setText(str(timeHour) + "시간" + str(timeMin) + "분" + str(timeSec) + "초")
 
-    # def showRemainTime(self, time):
-    #     timeSec = int(time % 60)
-    #     timeMin = int(time / 60)
-    #     timeHour = int(time / 3600)
-    #     if timeHour == 0:
-    #         if timeMin == 0:
-    #             self.progressBarUI.label_remainTime.setText(str(timeSec) + "초")
-    #
-    #         else:
-    #             self.progressBarUI.label_remainTime.setText(str(timeMin) + "분" + str(timeSec) + "초")
-    #
-    #     else:
-    #         self.progressBarUI.label_remainTime.setText(str(timeHour) + "시간" + str(timeMin) + "분" + str(timeSec) + "초")
+        if rTimeHour == 0:
+            if rTimeMin == 0:
+                self.progressBarUI.label_remainTime.setText(str(rTimeSec) + "초")
+
+            else:
+                self.progressBarUI.label_remainTime.setText(str(rTimeMin) + "분" + str(rTimeSec) + "초")
+
+        else:
+            self.progressBarUI.label_remainTime.setText(str(rTimeHour) + "시간" + str(rTimeMin) + "분" + str(rTimeSec) + "초")
