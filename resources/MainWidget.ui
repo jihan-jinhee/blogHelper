@@ -113,7 +113,7 @@ font: 9pt &quot;나눔고딕 ExtraBold&quot;;</string>
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QPushButton" name="pushButton_2">
+          <widget class="QPushButton" name="btn_commentCheck">
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -126,7 +126,7 @@ color: rgb(255, 255, 255);
 font: 9pt &quot;나눔고딕 ExtraBold&quot;;</string>
            </property>
            <property name="text">
-            <string>미구현</string>
+            <string>댓글 확인</string>
            </property>
           </widget>
          </item>
