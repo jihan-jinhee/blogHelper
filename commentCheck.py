@@ -3,7 +3,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
 from PyQt5 import QtWidgets, uic
+import pyperclip
 
 class CommentCheck(QtWidgets.QDialog):
     def __init__(self, parent = None):
@@ -19,7 +21,8 @@ class CommentCheck(QtWidgets.QDialog):
         driver = webdriver.Chrome('chromedriver')
 
         # 추후 login 방법 변경
-        self.login(driver)
+        userID = URL.split('/')[3]
+        self.login(driver, userID)
 
         driver.get(url=URL)
         driver.switch_to.frame('mainFrame')
@@ -37,11 +40,18 @@ class CommentCheck(QtWidgets.QDialog):
 
         # 댓글 관리 (좋아요, 답방)
         self.commentManage(commentList, driver)
-        
+
         time.sleep(10)
 
-    def login(self, driver):
+    def login(self, driver, userID):
         driver.get(url='https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com')
+        idBox = driver.find_element(By.ID, 'id')
+        idBox.click()
+        pyperclip.copy(userID)
+        idBox.send_keys(Keys.CONTROL, 'v')
+
+        pwBox = driver.find_element(By.ID, 'pw')
+        pwBox.click()
 
         while (True):
             loginDone = driver.current_url
