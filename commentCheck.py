@@ -17,6 +17,7 @@ class CommentCheck(QtWidgets.QDialog):
         self.commentCheckUI.btn_check.clicked.connect(self.btn_checkClicked)
 
     def btn_checkClicked(self):
+        error = False
         URL = self.commentCheckUI.lineEdit_URL.text()
         driver = webdriver.Chrome('chromedriver')
 
@@ -32,19 +33,29 @@ class CommentCheck(QtWidgets.QDialog):
 
         # 댓글창 클릭
         time.sleep(0.1)
-        elem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, comiID)))
-        driver.find_element(By.XPATH, comiID).click()
+        try:
+            elem = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, comiID)))
+            driver.find_element(By.XPATH, comiID).click()
+        except:
+            error = True
+            driver.close()
 
         # 댓글 리스트 저장
-        elem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_cbox_btn_recomm')))
-        commentList = driver.find_elements(By.CLASS_NAME, 'u_cbox_btn_recomm')
+        if not error:
+            try:
+                elem = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_cbox_btn_recomm')))
+                commentList = driver.find_elements(By.CLASS_NAME, 'u_cbox_btn_recomm')
 
-        # 댓글 관리 (좋아요, 창 띄우기)
-        self.commentLike(commentList, driver)
-        windowCount = len(driver.window_handles)
-        if windowCount != 1:
-            self.likePost(driver, windowCount)
-        time.sleep(10)
+            except:
+                error = True
+                driver.close()
+
+        if not error:
+            # 댓글 관리 (좋아요, 창 띄우기)
+            self.commentLike(commentList, driver)
+            windowCount = len(driver.window_handles)
+            if windowCount != 1:
+                self.likePost(driver, windowCount)
 
     def login(self, driver, userID):
         driver.get(url='https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com')
