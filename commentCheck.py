@@ -31,6 +31,7 @@ class CommentCheck(QtWidgets.QDialog):
         comiID = '//*[@id="Comi' + postID + '"]'
 
         # 댓글창 클릭
+        time.sleep(0.1)
         elem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, comiID)))
         driver.find_element(By.XPATH, comiID).click()
 
@@ -38,9 +39,11 @@ class CommentCheck(QtWidgets.QDialog):
         elem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_cbox_btn_recomm')))
         commentList = driver.find_elements(By.CLASS_NAME, 'u_cbox_btn_recomm')
 
-        # 댓글 관리 (좋아요, 답방)
-        self.commentManage(commentList, driver)
-
+        # 댓글 관리 (좋아요, 창 띄우기)
+        self.commentLike(commentList, driver)
+        windowCount = len(driver.window_handles)
+        if windowCount != 1:
+            self.likePost(driver, windowCount)
         time.sleep(10)
 
     def login(self, driver, userID):
@@ -60,7 +63,7 @@ class CommentCheck(QtWidgets.QDialog):
             else:
                 time.sleep(0.1)
 
-    def commentManage(self, commentList, driver):
+    def commentLike(self, commentList, driver):
         for i in range(len(commentList)):
             commentLike = commentList[i]
             if len(commentLike.get_attribute('outerHTML').split('class="')[1].split('"')[0].split(" ")) == 1:
@@ -80,3 +83,16 @@ class CommentCheck(QtWidgets.QDialog):
                         break
                     else:
                         time.sleep(0.1)
+
+    def likePost(self, driver, windowCount):
+        for i in range(windowCount - 1):
+            driver.switch_to.window(driver.window_handles[1])
+            driver.switch_to.frame('mainFrame')
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_likeit_list_btn')))
+            likeOfPost = driver.find_elements(By.CLASS_NAME, 'u_likeit_list_btn')
+            if 'off' in likeOfPost[3].get_attribute('outerHTML').split('"')[1]:
+                likeOfPost[2].click()
+                time.sleep(0.1)
+                driver.close()
+
+
