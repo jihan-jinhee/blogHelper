@@ -97,15 +97,21 @@ class CommentCheck(QtWidgets.QDialog):
 
     def likePost(self, driver, windowCount):
         for i in range(windowCount - 1):
+            error = False
             driver.switch_to.window(driver.window_handles[1])
             driver.switch_to.frame('mainFrame')
-            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_likeit_list_btn')))
-            likeOfPost = driver.find_elements(By.CLASS_NAME, 'u_likeit_list_btn')
-            for j in range(len(likeOfPost)):
-                if likeOfPost[j].aria_role == 'generic':
-                    if 'off' in likeOfPost[j].get_attribute('outerHTML').split('"')[1]:
-                        likeOfPost[j - 1].click()
-                        time.sleep(0.1)
+            try:
+                WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_likeit_list_btn')))
+            except:
+                error = True
+
+            if not error:
+                likeOfPost = driver.find_elements(By.CLASS_NAME, 'u_likeit_list_btn')
+                for j in range(len(likeOfPost)):
+                    if likeOfPost[j].aria_role == 'generic':
+                        if 'off' in likeOfPost[j].get_attribute('outerHTML').split('"')[1]:
+                            likeOfPost[j - 1].click()
+                            time.sleep(0.1)
 
             driver.close()
 
