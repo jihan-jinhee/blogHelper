@@ -57,6 +57,8 @@ class CommentCheck(QtWidgets.QDialog):
             if windowCount != 1:
                 self.likePost(driver, windowCount)
 
+        driver.quit()
+
     def login(self, driver, userID):
         driver.get(url='https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com')
         idBox = driver.find_element(By.ID, 'id')
@@ -84,7 +86,7 @@ class CommentCheck(QtWidgets.QDialog):
                 commentBox = commentLike.find_element(By.XPATH, '../../..')
                 commentID = commentBox.find_element(By.CLASS_NAME, 'u_cbox_info_main')
                 comentIDURL = commentID.get_attribute('outerHTML').split('"')[3]
-
+                comentIDURL = comentIDURL.replace('https://blog', 'https://m.blog')
                 driver.execute_script('window.open("' + comentIDURL + '");')
                 driver.switch_to.window(driver.window_handles[0])
                 driver.switch_to.frame('mainFrame')
@@ -99,7 +101,30 @@ class CommentCheck(QtWidgets.QDialog):
         for i in range(windowCount - 1):
             error = False
             driver.switch_to.window(driver.window_handles[1])
-            driver.switch_to.frame('mainFrame')
+            try:
+                elem = WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.CLASS_NAME, 'view_type_btn__z6Hlf')))
+            except:
+                error = True
+
+            try:
+                elem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'btn__xjUPw')))
+            except:
+                error = True
+
+            if not error:
+                buttonList = driver.find_elements(By.CLASS_NAME, 'btn__xjUPw')
+                buttonList[3].click()
+
+            try:
+                WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'card__WjujK')))
+            except:
+                error = True
+            if not error:
+                driver.find_element(By.CLASS_NAME, 'card__WjujK').click()
+                moblieURL = driver.current_url
+                PCURL = moblieURL.replace('https://m.blog', 'https://blog')
+                driver.get(url=PCURL)
             try:
                 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_likeit_list_btn')))
             except:
