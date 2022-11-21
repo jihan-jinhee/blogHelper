@@ -95,7 +95,7 @@ font: 20pt &quot;나눔고딕 ExtraBold&quot;;</string>
        <item>
         <layout class="QGridLayout" name="gridLayout">
          <item row="1" column="0">
-          <widget class="QPushButton" name="pushButton_3">
+          <widget class="QPushButton" name="btn_visitNeighbor">
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -108,7 +108,7 @@ color: rgb(255, 255, 255);
 font: 9pt &quot;나눔고딕 ExtraBold&quot;;</string>
            </property>
            <property name="text">
-            <string>미구현</string>
+            <string>이웃 글 방문</string>
            </property>
           </widget>
          </item>
@@ -238,7 +238,7 @@ font: 9pt &quot;나눔고딕 ExtraBold&quot;;</string>
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap>watermark.png</pixmap>
+          <pixmap>../../../../.designer/backup/watermark.png</pixmap>
          </property>
         </widget>
        </item>
@@ -256,8 +256,20 @@ font: 9pt &quot;나눔고딕 ExtraBold&quot;;</string>
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>메뉴</string>
+    </property>
+    <addaction name="actionmenu1"/>
+   </widget>
+   <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionmenu1">
+   <property name="text">
+    <string>menu1</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
