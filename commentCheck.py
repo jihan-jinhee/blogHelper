@@ -117,6 +117,7 @@ class CommentCheck(QtWidgets.QDialog):
                 self.logger.error("Lodding Fali : view_type_btn__z6Hlf : " + str(i))
                 error = True
 
+            time.sleep(0.2)
             try:
                 elem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'btn__xjUPw')))
             except:
