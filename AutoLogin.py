@@ -19,7 +19,7 @@ class AutoLogin(QtWidgets.QDialog):
         if self.isHaveInfo():
             [id, pw] = self.getUserInfo()
             self.autoLoginUI.lineEdit_ID.setText(id)
-            self.autoLoginUI.lineEdit_PW.setText(pw)
+            self.autoLoginUI.lineEdit_PW.setText('*' * len(pw))
 
     def keyPressEvent(self, e):
         if e.key() == Qt.Key_Enter:
@@ -41,6 +41,12 @@ class AutoLogin(QtWidgets.QDialog):
         self.saveInfo(ID, PW)
 
     def saveInfo(self, ID, PW):
+        if '*' in PW:
+            checkPW = PW.replace('*','')
+            if len(checkPW) == 0:
+                self.autoLoginUI.close()
+                return
+
         File = open("userInfo.txt", "w")
         securityPW = self.encrypt(PW)
         print(ID, file=File)
