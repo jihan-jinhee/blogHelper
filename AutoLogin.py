@@ -10,7 +10,9 @@ class AutoLogin(QtWidgets.QDialog):
         self.setUp()
 
     def setUp(self):
+        self.recentText = ''
         self.autoLoginUI.btn_saveLoginInfo.clicked.connect(self.btn_saveLoginInfoClicked)
+        self.autoLoginUI.lineEdit_PW.textChanged.connect(self.pwTextInitial)
         securityKey = bytes(self.securityKeyFile.readline(), 'utf-8')  # Fernet.generate_key()
         self.fernet = Fernet(securityKey)
         self.loadUserInfo()
@@ -21,9 +23,21 @@ class AutoLogin(QtWidgets.QDialog):
             self.autoLoginUI.lineEdit_ID.setText(id)
             self.autoLoginUI.lineEdit_PW.setText('*' * len(pw))
 
-    def keyPressEvent(self, e):
-        if e.key() == Qt.Key_Enter:
-            self.saveEvent()
+    def pwTextInitial(self):
+        if self.checkPwIsHidden(self.recentText):
+            self.autoLoginUI.lineEdit_PW.setText('')
+        self.recentText = self.autoLoginUI.lineEdit_PW.text()
+
+    def checkPwIsHidden(self, pw):
+        if '*' in pw:
+            checkPw = pw.replace('*','')
+            if len(checkPw) == 0:
+                return True
+        return False
+
+    # def keyPressEvent(self, e):
+    #     if e.key() == Qt.Key_Enter:
+    #         self.saveEvent()
 
     def btn_saveLoginInfoClicked(self):
         self.saveEvent()
@@ -41,11 +55,9 @@ class AutoLogin(QtWidgets.QDialog):
         self.saveInfo(ID, PW)
 
     def saveInfo(self, ID, PW):
-        if '*' in PW:
-            checkPW = PW.replace('*','')
-            if len(checkPW) == 0:
-                self.autoLoginUI.close()
-                return
+        if self.checkPwIsHidden(PW):
+            self.autoLoginUI.close()
+            return
 
         File = open("userInfo.txt", "w")
         securityPW = self.encrypt(PW)
