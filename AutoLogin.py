@@ -11,7 +11,8 @@ class AutoLogin(QtWidgets.QDialog):
 
     def setUp(self):
         self.autoLoginUI.btn_saveLoginInfo.clicked.connect(self.btn_saveLoginInfoClicked)
-        self.securityKey = bytes(self.securityKeyFile.readline(), 'utf-8')  # Fernet.generate_key()
+        securityKey = bytes(self.securityKeyFile.readline(), 'utf-8')  # Fernet.generate_key()
+        self.fernet = Fernet(securityKey)
 
     def keyPressEvent(self, e):
         if e.key() == Qt.Key_Enter:
@@ -21,8 +22,10 @@ class AutoLogin(QtWidgets.QDialog):
         self.saveEvent()
 
     def encrypt(self, key):
-        fernet = Fernet(self.securityKey)
-        return fernet.encrypt(bytes(key, 'utf-8'))
+        return self.fernet.encrypt(bytes(key, 'utf-8'))
+
+    def decrypt(self, key):
+        return self.fernet.decrypt(key)
 
     def saveEvent(self):
         ID = self.autoLoginUI.lineEdit_ID.text()
