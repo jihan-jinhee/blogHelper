@@ -1,21 +1,29 @@
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtCore import Qt
 from cryptography.fernet import Fernet
+import time
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import pyperclip
 
 class AutoLogin(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.parent = parent
         self.autoLoginUI = uic.loadUi("./resources//autoLogin.ui")
-        self.securityKeyFile = open("./resources//securityKey.txt", "r")
         self.setUp()
 
     def setUp(self):
         self.recentText = ''
         self.autoLoginUI.btn_saveLoginInfo.clicked.connect(self.btn_saveLoginInfoClicked)
         self.autoLoginUI.lineEdit_PW.textChanged.connect(self.pwTextInitial)
-        securityKey = bytes(self.securityKeyFile.readline(), 'utf-8')  # Fernet.generate_key()
-        self.fernet = Fernet(securityKey)
+        self.getSercurityFernet()
         self.loadUserInfo()
+
+    def getSercurityFernet(self):
+        securityKeyFile = open("./resources//securityKey.txt", "r")
+        securityKey = bytes(securityKeyFile.readline(), 'utf-8')  # Fernet.generate_key()
+        fernet = Fernet(securityKey)
+        return fernet
 
     def loadUserInfo(self):
         if self.isHaveInfo():
@@ -43,10 +51,12 @@ class AutoLogin(QtWidgets.QDialog):
         self.saveEvent()
 
     def encrypt(self, key):
-        return self.fernet.encrypt(bytes(key, 'utf-8'))
+        fernet = self.getSercurityFernet()
+        return fernet.encrypt(bytes(key, 'utf-8'))
 
     def decrypt(self, key):
-        bKey = self.fernet.decrypt(key)
+        fernet = AutoLogin.getSercurityFernet(self)
+        bKey = fernet.decrypt(key)
         return bKey.decode('utf-8')
 
     def saveEvent(self):
@@ -75,7 +85,7 @@ class AutoLogin(QtWidgets.QDialog):
         if len(lines) == 2:
             id = lines[0][:-1]
             pw = lines[1][2:]
-            pw = self.decrypt(pw)
+            pw = AutoLogin.decrypt(self, pw)
             return [id, pw]
         else:
             return [None, None]
@@ -86,3 +96,24 @@ class AutoLogin(QtWidgets.QDialog):
             return False
         else:
             return True
+
+    def login(self, driver, useAutoLogin : bool):
+        driver.get(url='https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com')
+        if self.isHaveInfo(self) and useAutoLogin:
+            userID, userPW = self.getUserInfo(self)
+            idBox = driver.find_element(By.ID, 'id')
+            idBox.click()
+            pyperclip.copy(userID)
+            idBox.send_keys(Keys.CONTROL, 'v')
+
+            pwBox = driver.find_element(By.ID, 'pw')
+            pwBox.click()
+            pyperclip.copy(userPW)
+            pwBox.send_keys(Keys.CONTROL, 'v')
+
+        while (True):
+            loginDone = driver.current_url
+            if loginDone == 'https://www.naver.com/':
+                break
+            else:
+                time.sleep(0.1)

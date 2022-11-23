@@ -7,10 +7,13 @@ from selenium.webdriver.common.keys import Keys
 from PyQt5 import QtWidgets, uic
 import pyperclip
 import logging
+from webdriver_manager.chrome import ChromeDriverManager
+from AutoLogin import AutoLogin
 
 class CommentCheck(QtWidgets.QDialog):
     def __init__(self, parent = None):
         super().__init__(parent)
+        self.parent = parent
         self.commentCheckUI = uic.loadUi("./resources//commentCheckUI.ui")
         Log_Format = "%(levelname)s %(asctime)s - %(message)s"
         logging.basicConfig(filename="logfile.log",
@@ -26,11 +29,11 @@ class CommentCheck(QtWidgets.QDialog):
     def btn_checkClicked(self):
         error = False
         URL = self.commentCheckUI.lineEdit_URL.text()
-        driver = webdriver.Chrome('chromedriver')
+        driver = webdriver.Chrome(ChromeDriverManager().install())
 
-        # 추후 login 방법 변경
         userID = URL.split('/')[3]
-        self.login(driver, userID)
+        useAutoLogin = self.parent.ui.actionmenu1.isChecked()
+        AutoLogin.login(AutoLogin, driver, useAutoLogin)
 
         driver.get(url=URL)
         driver.switch_to.frame('mainFrame')
@@ -67,23 +70,6 @@ class CommentCheck(QtWidgets.QDialog):
                 self.likePost(driver, windowCount)
 
         driver.quit()
-
-    def login(self, driver, userID):
-        driver.get(url='https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com')
-        idBox = driver.find_element(By.ID, 'id')
-        idBox.click()
-        pyperclip.copy(userID)
-        idBox.send_keys(Keys.CONTROL, 'v')
-
-        pwBox = driver.find_element(By.ID, 'pw')
-        pwBox.click()
-
-        while (True):
-            loginDone = driver.current_url
-            if loginDone == 'https://www.naver.com/':
-                break
-            else:
-                time.sleep(0.1)
 
     def commentLike(self, commentList, driver):
         for i in range(len(commentList)):

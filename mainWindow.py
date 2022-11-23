@@ -21,12 +21,12 @@ class MainWindow(QtWidgets.QDialog):
         self.ui.label_watermark.mousePressEvent = self.openWeb
 
     def btn_watermarkClickedUI(self):
-        watermarkUI = Watermark()
+        watermarkUI = Watermark(self)
         watermarkUI.folderChooseUI.show()
         watermarkUI.folderChooseUI.exec()
 
     def btn_commentCheckClickedUI(self):
-        commentCheckUI = CommentCheck()
+        commentCheckUI = CommentCheck(self)
         commentCheckUI.commentCheckUI.show()
         commentCheckUI.commentCheckUI.exec()
 
@@ -35,7 +35,7 @@ class MainWindow(QtWidgets.QDialog):
 
     def autoLogin(self):
         if self.ui.actionmenu1.isChecked():
-            autoLoginUI = AutoLogin()
+            autoLoginUI = AutoLogin(self)
             autoLoginUI.autoLoginUI.show()
             autoLoginUI.autoLoginUI.exec()
             if not autoLoginUI.isHaveInfo():
