@@ -16,6 +16,7 @@ class MainWindow(QtWidgets.QDialog):
         self.ui.btn_commentCheck.clicked.connect(self.btn_commentCheckClickedUI)
         self.ui.btn_visitNeighbor.clicked.connect(self.btn_visitNeighborClickedUI)
         self.ui.actionmenu1.setText("자동 로그인 설정")
+        self.ui.actionmenu1.setCheckable(True)
         self.ui.actionmenu1.triggered.connect(self.autoLogin)
         self.ui.label_watermark.mousePressEvent = self.openWeb
 
@@ -33,9 +34,14 @@ class MainWindow(QtWidgets.QDialog):
         print("Test")
 
     def autoLogin(self):
-        autoLoginUI = AutoLogin()
-        autoLoginUI.autoLoginUI.show()
-        autoLoginUI.autoLoginUI.exec()
+        if self.ui.actionmenu1.isChecked():
+            autoLoginUI = AutoLogin()
+            autoLoginUI.autoLoginUI.show()
+            autoLoginUI.autoLoginUI.exec()
+            if not autoLoginUI.isHaveInfo():
+                self.ui.actionmenu1.setChecked(False)
+        else:
+            pass
 
     def openWeb(self, event):
         webbrowser.open("https://blog.naver.com/hanjinhee502")
