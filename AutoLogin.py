@@ -111,6 +111,9 @@ class AutoLogin(QtWidgets.QDialog):
             pyperclip.copy(userPW)
             pwBox.send_keys(Keys.CONTROL, 'v')
 
+            enterBox = driver.find_element(By.CLASS_NAME, 'btn_login')
+            enterBox.click()
+
         while (True):
             loginDone = driver.current_url
             if loginDone == 'https://www.naver.com/':
