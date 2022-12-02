@@ -3,24 +3,16 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 from PyQt5 import QtWidgets, uic
-import pyperclip
-import logging
 from webdriver_manager.chrome import ChromeDriverManager
 from AutoLogin import AutoLogin
+import logWriter
 
 class CommentCheck(QtWidgets.QDialog):
     def __init__(self, parent = None):
         super().__init__(parent)
         self.parent = parent
         self.commentCheckUI = uic.loadUi("./resources//commentCheckUI.ui")
-        Log_Format = "%(levelname)s %(asctime)s - %(message)s"
-        logging.basicConfig(filename="logfile.log",
-                            filemode="w",
-                            format=Log_Format,
-                            level=logging.ERROR)
-        self.logger = logging.getLogger()
         self.setUp()
 
     def setUp(self):
@@ -48,7 +40,7 @@ class CommentCheck(QtWidgets.QDialog):
             driver.find_element(By.XPATH, comiID).click()
         except:
             error = True
-            self.logger.error("Lodding Fali : comiID, 댓글창 클릭 실패")
+            logWriter.writeError("Lodding Fali : comiID, 댓글창 클릭 실패")
             driver.close()
 
         # 댓글 리스트 저장
@@ -59,7 +51,7 @@ class CommentCheck(QtWidgets.QDialog):
 
             except:
                 error = True
-                self.logger.error("Lodding Fali : u_cbox_btn_recomm, 댓글 리스트 저장 실패")
+                logWriter.writeError("Lodding Fali : u_cbox_btn_recomm, 댓글 리스트 저장 실패")
                 driver.close()
 
         if not error:
@@ -100,14 +92,14 @@ class CommentCheck(QtWidgets.QDialog):
                 elem = WebDriverWait(driver, 10).until(
                     EC.presence_of_element_located((By.CLASS_NAME, 'view_type_btn__z6Hlf')))
             except:
-                self.logger.error("Lodding Fali : view_type_btn__z6Hlf : " + str(i))
+                logWriter.writeError("Lodding Fali : view_type_btn__z6Hlf : " + str(i))
                 error = True
 
             time.sleep(0.2)
             try:
                 elem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'btn__xjUPw')))
             except:
-                self.logger.error("Lodding Fali : btn__xjUPw : " + str(i))
+                logWriter.writeError("Lodding Fali : btn__xjUPw : " + str(i))
                 error = True
 
             if not error:
@@ -117,7 +109,7 @@ class CommentCheck(QtWidgets.QDialog):
             try:
                 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'card__WjujK')))
             except:
-                self.logger.error("Lodding Fali : card__WjujK : " + str(i))
+                logWriter.writeError("Lodding Fali : card__WjujK : " + str(i))
                 error = True
 
             if not error:
@@ -128,7 +120,7 @@ class CommentCheck(QtWidgets.QDialog):
             try:
                 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_likeit_list_btn')))
             except:
-                self.logger.error("Lodding Fali : u_likeit_list_btn, 좋아요 버튼 탐색 실패 : " + str(i))
+                logWriter.writeError("Lodding Fali : u_likeit_list_btn, 좋아요 버튼 탐색 실패 : " + str(i))
                 error = True
 
             if not error:
