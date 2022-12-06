@@ -238,7 +238,7 @@ font: 9pt &quot;나눔고딕 ExtraBold&quot;;</string>
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap>../../../../.designer/backup/watermark.png</pixmap>
+          <pixmap>watermark.png</pixmap>
          </property>
         </widget>
        </item>

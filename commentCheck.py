@@ -104,7 +104,9 @@ class CommentCheck(QtWidgets.QDialog):
 
             if not error:
                 buttonList = driver.find_elements(By.CLASS_NAME, 'btn__xjUPw')
-                buttonList[3].click()
+                for button in buttonList:
+                    if button.accessible_name == '카드형 보기':
+                        button.click()
 
             try:
                 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'card__WjujK')))
