@@ -86,44 +86,7 @@ class CommentCheck(QtWidgets.QDialog):
 
     def likePost(self, driver, windowCount):
         for i in range(windowCount - 1):
-            error = False
-            driver.switch_to.window(driver.window_handles[1])
-            try:
-                elem = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.CLASS_NAME, 'view_type_btn__z6Hlf')))
-            except:
-                logWriter.writeError("Lodding Fali : view_type_btn__z6Hlf : " + str(i))
-                error = True
-
-            time.sleep(0.2)
-            try:
-                elem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'btn__xjUPw')))
-            except:
-                logWriter.writeError("Lodding Fali : btn__xjUPw : " + str(i))
-                error = True
-
-            if not error:
-                buttonList = driver.find_elements(By.CLASS_NAME, 'btn__xjUPw')
-                for button in buttonList:
-                    if button.accessible_name == '카드형 보기':
-                        button.click()
-
-            try:
-                WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'card__WjujK')))
-            except:
-                logWriter.writeError("Lodding Fali : card__WjujK : " + str(i))
-                error = True
-
-            if not error:
-                driver.find_element(By.CLASS_NAME, 'card__WjujK').click()
-                moblieURL = driver.current_url
-                PCURL = moblieURL.replace('https://m.blog', 'https://blog')
-                driver.get(url=PCURL)
-            try:
-                WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_likeit_list_btn')))
-            except:
-                logWriter.writeError("Lodding Fali : u_likeit_list_btn, 좋아요 버튼 탐색 실패 : " + str(i))
-                error = True
+            error = self.searchLikeButton(driver)
 
             if not error:
                 likeOfPost = driver.find_elements(By.CLASS_NAME, 'u_likeit_list_btn')
@@ -135,4 +98,44 @@ class CommentCheck(QtWidgets.QDialog):
 
             driver.close()
 
+    def searchLikeButton(self, driver):
+        error = False
+        driver.switch_to.window(driver.window_handles[1])
+        try:
+            elem = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.CLASS_NAME, 'view_type_btn__z6Hlf')))
+        except:
+            logWriter.writeError("Lodding Fali : view_type_btn__z6Hlf")
+            error = True
 
+        time.sleep(0.2)
+        try:
+            elem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'btn__xjUPw')))
+        except:
+            logWriter.writeError("Lodding Fali : btn__xjUPw")
+            error = True
+
+        if not error:
+            buttonList = driver.find_elements(By.CLASS_NAME, 'btn__xjUPw')
+            for button in buttonList:
+                if button.accessible_name == '카드형 보기':
+                    button.click()
+
+        try:
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'card__WjujK')))
+        except:
+            logWriter.writeError("Lodding Fali : card__WjujK")
+            error = True
+
+        if not error:
+            driver.find_element(By.CLASS_NAME, 'card__WjujK').click()
+            moblieURL = driver.current_url
+            PCURL = moblieURL.replace('https://m.blog', 'https://blog')
+            driver.get(url=PCURL)
+        try:
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_likeit_list_btn')))
+        except:
+            logWriter.writeError("Lodding Fali : u_likeit_list_btn, 좋아요 버튼 탐색 실패")
+            error = True
+
+        return error
