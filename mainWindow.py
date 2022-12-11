@@ -2,7 +2,8 @@ from PyQt5 import QtWidgets, uic
 from watermark import Watermark
 from commentCheck import CommentCheck
 from AutoLogin import AutoLogin
-import webbrowser
+from Purchase import Purchase
+import os
 
 class MainWindow(QtWidgets.QDialog):
     def __init__(self, parent = None):
@@ -31,7 +32,15 @@ class MainWindow(QtWidgets.QDialog):
         commentCheckUI.commentCheckUI.exec()
 
     def btn_visitNeighborClickedUI(self):
-        print("Test")
+        if os.path.isfile('./neighborPostLike.py'):
+            from neighborPostLike import NeighborPostLike
+            neighborPostLikeUI = NeighborPostLike(self)
+            neighborPostLikeUI.neighborPostLikeUI.show()
+            neighborPostLikeUI.neighborPostLikeUI.exec()
+        else:
+            purchaseUI = Purchase(self)
+            purchaseUI.purchaseUI.show()
+            purchaseUI.purchaseUI.exec()
 
     def autoLogin(self):
         if self.ui.actionmenu1.isChecked():
@@ -44,4 +53,4 @@ class MainWindow(QtWidgets.QDialog):
             pass
 
     def openWeb(self, event):
-        webbrowser.open("https://blog.naver.com/hanjinhee502")
+        Purchase(self).openContact()
