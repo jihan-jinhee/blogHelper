@@ -7,6 +7,7 @@ from PyQt5 import QtWidgets, uic
 from webdriver_manager.chrome import ChromeDriverManager
 from AutoLogin import AutoLogin
 import logWriter
+import commentWriter
 
 class CommentCheck(QtWidgets.QDialog):
     def __init__(self, parent = None):
@@ -95,6 +96,7 @@ class CommentCheck(QtWidgets.QDialog):
                         if 'off' in likeOfPost[j].get_attribute('outerHTML').split('"')[1]:
                             likeOfPost[j - 1].click()
                             time.sleep(0.1)
+                            commentWriter.write(driver)
 
             driver.close()
 
