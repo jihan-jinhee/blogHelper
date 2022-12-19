@@ -130,6 +130,7 @@ class CommentCheck(QtWidgets.QDialog):
             error = True
 
         if not error:
+            time.sleep(0.1)
             driver.find_element(By.CLASS_NAME, 'card__WjujK').click()
             moblieURL = driver.current_url
             PCURL = moblieURL.replace('https://m.blog', 'https://blog')
