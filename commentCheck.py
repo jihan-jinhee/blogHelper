@@ -44,23 +44,34 @@ class CommentCheck(QtWidgets.QDialog):
             logWriter.writeError("Lodding Fali : comiID, 댓글창 클릭 실패")
             driver.close()
 
+        commentPageList = self.commentPageListSearch(driver)
+
         # 댓글 리스트 저장
-        if not error:
-            try:
-                elem = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_cbox_btn_recomm')))
-                commentList = driver.find_elements(By.CLASS_NAME, 'u_cbox_btn_recomm')
+        for i in range(len(commentPageList)):
+            commentPageList[i].click()
+            time.sleep(0.1)
+            if not error:
+                try:
+                    elem = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_cbox_btn_recomm')))
+                    commentList = driver.find_elements(By.CLASS_NAME, 'u_cbox_btn_recomm')
 
-            except:
-                error = True
-                logWriter.writeError("Lodding Fali : u_cbox_btn_recomm, 댓글 리스트 저장 실패")
-                driver.close()
+                except:
+                    error = True
+                    logWriter.writeError("Lodding Fali : u_cbox_btn_recomm, 댓글 리스트 저장 실패")
+                    driver.close()
 
-        if not error:
-            # 댓글 관리 (좋아요, 창 띄우기)
-            self.commentLike(commentList, driver)
-            windowCount = len(driver.window_handles)
-            if windowCount != 1:
-                self.likePost(driver, windowCount)
+            if not error:
+                # 댓글 관리 (좋아요, 창 띄우기)
+                self.commentLike(commentList, driver)
+                windowCount = len(driver.window_handles)
+                if windowCount != 1:
+                    self.likePost(driver, windowCount)
+
+            driver.switch_to.window(driver.window_handles[0])
+            driver.switch_to.frame('mainFrame')
+
+            commentPageList = self.commentPageListSearch(driver)
+
 
         driver.quit()
 
@@ -142,3 +153,13 @@ class CommentCheck(QtWidgets.QDialog):
             error = True
 
         return error
+
+    def commentPageListSearch(self, driver):
+        commentPageList = []
+        try:
+            WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_cbox_page')))
+            commentPageList = driver.find_elements(By.CLASS_NAME, 'u_cbox_page')
+        except:
+            logWriter.writeError("Lodding Fali : 댓글 페이지 리스트 개수 호출 실패")
+
+        return commentPageList

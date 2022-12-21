@@ -10,11 +10,6 @@ def write(driver):
 
 def write2(driver, text):
     commentUse = True
-    try:
-        driver.switch_to.frame('mainFrame')
-    except:
-        logWriter.writeError("MainFrame Switch Fail")
-        commentUse = False
 
     if commentUse:
         commentWindow = findCommentLocation(driver)
