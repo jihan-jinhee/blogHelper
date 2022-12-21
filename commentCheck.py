@@ -8,6 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from AutoLogin import AutoLogin
 import logWriter
 import commentWriter
+import mainFunction
 
 class CommentCheck(QtWidgets.QDialog):
     def __init__(self, parent = None):
@@ -73,13 +74,14 @@ class CommentCheck(QtWidgets.QDialog):
             commentPageList = self.commentPageListSearch(driver)
 
 
-        driver.quit()
+        mainFunction.driverQuitAll(driver)
 
     def commentLike(self, commentList, driver):
         for i in range(len(commentList)):
             commentLike = commentList[i]
             if len(commentLike.get_attribute('outerHTML').split('class="')[1].split('"')[0].split(" ")) == 1:
                 # 좋아요
+                time.sleep(0.1)
                 commentLike.click()
 
                 commentBox = commentLike.find_element(By.XPATH, '../../..')
@@ -89,12 +91,17 @@ class CommentCheck(QtWidgets.QDialog):
                 driver.execute_script('window.open("' + comentIDURL + '");')
                 driver.switch_to.window(driver.window_handles[0])
                 driver.switch_to.frame('mainFrame')
-
+                j = 0
                 while True:
                     if len(commentLike.get_attribute('outerHTML').split('class="')[1].split('"')[0].split(" ")) == 2:
                         break
                     else:
                         time.sleep(0.1)
+                        j += 1
+
+                    if j > 100:
+                        logWriter.writeError("line 103 error")
+                        break
 
     def likePost(self, driver, windowCount):
         for i in range(windowCount - 1):
