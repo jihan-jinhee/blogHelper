@@ -50,7 +50,7 @@ class CommentCheck(QtWidgets.QDialog):
         # 댓글 리스트 저장
         for i in range(len(commentPageList)):
             commentPageList[i].click()
-            time.sleep(0.1)
+            time.sleep(1)
             if not error:
                 try:
                     elem = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_cbox_btn_recomm')))
@@ -79,7 +79,12 @@ class CommentCheck(QtWidgets.QDialog):
     def commentLike(self, commentList, driver):
         for i in range(len(commentList)):
             commentLike = commentList[i]
-            if len(commentLike.get_attribute('outerHTML').split('class="')[1].split('"')[0].split(" ")) == 1:
+            try:
+                isLen1 = len(commentLike.get_attribute('outerHTML').split('class="')[1].split('"')[0].split(" ")) == 1
+            except:
+                logWriter.writeError('commentLike error : ' + str(commentLike))
+
+            if isLen1:
                 # 좋아요
                 time.sleep(0.1)
                 commentLike.click()
