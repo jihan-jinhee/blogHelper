@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, uic
 from watermark import Watermark
 from commentCheck import CommentCheck
+from letterCount import LetterCount
 from AutoLogin import AutoLogin
 from Purchase import Purchase
 import os
@@ -16,6 +17,7 @@ class MainWindow(QtWidgets.QDialog):
         self.ui.btn_watermark.clicked.connect(self.btn_watermarkClickedUI)
         self.ui.btn_commentCheck.clicked.connect(self.btn_commentCheckClickedUI)
         self.ui.btn_visitNeighbor.clicked.connect(self.btn_visitNeighborClickedUI)
+        self.ui.btn_letterCount.clicked.connect(self.btn_letterCountClickedUI)
         self.ui.actionmenu1.setText("자동 로그인 설정")
         self.ui.actionmenu1.setCheckable(True)
         self.ui.actionmenu1.triggered.connect(self.autoLogin)
@@ -41,6 +43,11 @@ class MainWindow(QtWidgets.QDialog):
             purchaseUI = Purchase(self)
             purchaseUI.purchaseUI.show()
             purchaseUI.purchaseUI.exec()
+
+    def btn_letterCountClickedUI(self):
+        letterCountUI = LetterCount(self)
+        letterCountUI.letterCountUI.show()
+        letterCountUI.letterCountUI.exec()
 
     def autoLogin(self):
         if self.ui.actionmenu1.isChecked():

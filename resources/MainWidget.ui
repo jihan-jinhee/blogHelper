@@ -131,7 +131,7 @@ font: 9pt &quot;나눔고딕 ExtraBold&quot;;</string>
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QPushButton" name="pushButton_4">
+          <widget class="QPushButton" name="btn_letterCount">
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -144,7 +144,7 @@ color: rgb(255, 255, 255);
 font: 9pt &quot;나눔고딕 ExtraBold&quot;;</string>
            </property>
            <property name="text">
-            <string>미구현</string>
+            <string>글자수세기</string>
            </property>
           </widget>
          </item>
