@@ -4,6 +4,7 @@ from commentCheck import CommentCheck
 from letterCount import LetterCount
 from AutoLogin import AutoLogin
 from Purchase import Purchase
+from CommentText import CommentText
 import os
 
 class MainWindow(QtWidgets.QDialog):
@@ -21,6 +22,9 @@ class MainWindow(QtWidgets.QDialog):
         self.ui.actionmenu1.setText("자동 로그인 설정")
         self.ui.actionmenu1.setCheckable(True)
         self.ui.actionmenu1.triggered.connect(self.autoLogin)
+        self.ui.actionmenu2.setText("댓글 문구 설정")
+        self.ui.actionmenu2.setCheckable(True)
+        self.ui.actionmenu2.triggered.connect(self.commentText)
         self.ui.label_watermark.mousePressEvent = self.openWeb
 
     def btn_watermarkClickedUI(self):
@@ -56,6 +60,16 @@ class MainWindow(QtWidgets.QDialog):
             autoLoginUI.autoLoginUI.exec()
             if not autoLoginUI.isHaveInfo():
                 self.ui.actionmenu1.setChecked(False)
+        else:
+            pass
+
+    def commentText(self):
+        if self.ui.actionmenu2.isChecked():
+            commentTextUI = CommentText(self)
+            commentTextUI.commentTextUI.show()
+            commentTextUI.commentTextUI.exec()
+            if not commentTextUI.isHaveInfo():
+                self.ui.actionmenu2.setChecked(False)
         else:
             pass
 

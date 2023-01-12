@@ -2,9 +2,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import logWriter
+from CommentText import CommentText
 
-def write(driver):
-    text = "포스팅 잘 보고 갑니다~\n오늘 하루도 고생하셨습니다!"
+def write(driver, useAutoComment):
+    if useAutoComment:
+        text = CommentText.getCommentInfo(CommentText)
+    else:
+        text = "정성 가득 포스팅 잘 보고 갑니다~"
     print("test")
     write2(driver, text)
 

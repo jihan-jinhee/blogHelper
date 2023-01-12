@@ -19,6 +19,7 @@ class CommentCheck(QtWidgets.QDialog):
 
     def setUp(self):
         self.commentCheckUI.btn_check.clicked.connect(self.btn_checkClicked)
+        self.useAutoComment = self.parent.ui.actionmenu2.isChecked()
 
     def btn_checkClicked(self):
         error = False
@@ -49,7 +50,8 @@ class CommentCheck(QtWidgets.QDialog):
 
         # 댓글 리스트 저장
         for i in range(len(commentPageList)):
-            commentPageList[i].click()
+            if len(commentPageList) != 1:
+                commentPageList[i].click()
             time.sleep(1)
             if not error:
                 try:
@@ -87,7 +89,13 @@ class CommentCheck(QtWidgets.QDialog):
             if isLen1:
                 # 좋아요
                 time.sleep(0.1)
-                commentLike.click()
+                try:
+                    commentLike.click()
+                except:
+                    commentList = driver.find_elements(By.CLASS_NAME, 'u_cbox_btn_recomm')
+                    commentLike = commentList[i]
+                    time.sleep(1)
+                    commentLike.click()
 
                 commentBox = commentLike.find_element(By.XPATH, '../../..')
                 commentID = commentBox.find_element(By.CLASS_NAME, 'u_cbox_info_main')
@@ -119,7 +127,7 @@ class CommentCheck(QtWidgets.QDialog):
                         if 'off' in likeOfPost[j].get_attribute('outerHTML').split('"')[1]:
                             likeOfPost[j - 1].click()
                             time.sleep(0.1)
-                            commentWriter.write(driver)
+                            commentWriter.write(driver, self.useAutoComment)
 
             driver.close()
 
