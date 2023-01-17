@@ -3,7 +3,10 @@ from cryptography.fernet import Fernet
 import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 import pyperclip
+import logWriter
 
 class AutoLogin(QtWidgets.QDialog):
     def __init__(self, parent=None):
@@ -96,6 +99,17 @@ class AutoLogin(QtWidgets.QDialog):
             return False
         else:
             return True
+
+    def naverLogin(self, useAutoLogin):
+        URL = "https://blog.naver.com"
+        try:
+            driver = webdriver.Chrome(ChromeDriverManager().install())
+            driver.implicitly_wait(2)
+        except:
+            logWriter.writeError("webdriver open fail")
+
+        self.login(self, driver, useAutoLogin)
+        return driver
 
     def login(self, driver, useAutoLogin : bool):
         driver.get(url='https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com')

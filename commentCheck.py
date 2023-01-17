@@ -21,17 +21,20 @@ class CommentCheck(QtWidgets.QDialog):
         self.commentCheckUI.btn_check.clicked.connect(self.btn_checkClicked)
         self.useAutoComment = self.parent.ui.actionmenu2.isChecked()
 
+    def naverLogin(self):
+        useAutoLogin = self.parent.ui.actionmenu1.isChecked()
+        self.driver = AutoLogin.naverLogin(AutoLogin, useAutoLogin)
+
     def btn_checkClicked(self):
         error = False
         URL = self.commentCheckUI.lineEdit_URL.text()
-        driver = webdriver.Chrome(ChromeDriverManager().install())
 
         userID = URL.split('/')[3]
         useAutoLogin = self.parent.ui.actionmenu1.isChecked()
-        AutoLogin.login(AutoLogin, driver, useAutoLogin)
+        self.naverLogin()
 
-        driver.get(url=URL)
-        driver.switch_to.frame('mainFrame')
+        self.driver.get(url=URL)
+        self.driver.switch_to.frame('mainFrame')
 
         postID = URL.split('/')[-1]
         comiID = '//*[@id="Comi' + postID + '"]'
@@ -39,14 +42,14 @@ class CommentCheck(QtWidgets.QDialog):
         # 댓글창 클릭
         time.sleep(0.1)
         try:
-            elem = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, comiID)))
-            driver.find_element(By.XPATH, comiID).click()
+            elem = WebDriverWait(self.driver, 3).until(EC.presence_of_element_located((By.XPATH, comiID)))
+            self.driver.find_element(By.XPATH, comiID).click()
         except:
             error = True
             logWriter.writeError("Lodding Fali : comiID, 댓글창 클릭 실패")
-            driver.close()
+            self.driver.close()
 
-        commentPageList = self.commentPageListSearch(driver)
+        commentPageList = self.commentPageListSearch(self.driver)
 
         # 댓글 리스트 저장
         for i in range(len(commentPageList)):
@@ -55,28 +58,28 @@ class CommentCheck(QtWidgets.QDialog):
             time.sleep(1)
             if not error:
                 try:
-                    elem = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_cbox_btn_recomm')))
-                    commentList = driver.find_elements(By.CLASS_NAME, 'u_cbox_btn_recomm')
+                    elem = WebDriverWait(self.driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_cbox_btn_recomm')))
+                    commentList = self.driver.find_elements(By.CLASS_NAME, 'u_cbox_btn_recomm')
 
                 except:
                     error = True
                     logWriter.writeError("Lodding Fali : u_cbox_btn_recomm, 댓글 리스트 저장 실패")
-                    driver.close()
+                    self.driver.close()
 
             if not error:
                 # 댓글 관리 (좋아요, 창 띄우기)
-                self.commentLike(commentList, driver)
-                windowCount = len(driver.window_handles)
+                self.commentLike(commentList, self.driver)
+                windowCount = len(self.driver.window_handles)
                 if windowCount != 1:
-                    self.likePost(driver, windowCount)
+                    self.likePost(self.driver, windowCount)
 
-            driver.switch_to.window(driver.window_handles[0])
-            driver.switch_to.frame('mainFrame')
+            self.driver.switch_to.window(self.driver.window_handles[0])
+            self.driver.switch_to.frame('mainFrame')
 
-            commentPageList = self.commentPageListSearch(driver)
+            commentPageList = self.commentPageListSearch(self.driver)
 
 
-        mainFunction.driverQuitAll(driver)
+        mainFunction.driverQuitAll(self.driver)
 
     def commentLike(self, commentList, driver):
         for i in range(len(commentList)):
