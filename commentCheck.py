@@ -9,6 +9,7 @@ from AutoLogin import AutoLogin
 import logWriter
 import commentWriter
 import mainFunction
+from webControl import WebControl
 
 class CommentCheck(QtWidgets.QDialog):
     def __init__(self, parent = None):
@@ -81,6 +82,12 @@ class CommentCheck(QtWidgets.QDialog):
 
         mainFunction.driverQuitAll(self.driver)
 
+    def visitCommentUser(self, driver, commentBox):
+        commentID = commentBox.find_element(By.CLASS_NAME, 'u_cbox_info_main')
+        comentIDURL = commentID.get_attribute('outerHTML').split('"')[3]
+        comentIDURL = comentIDURL.replace('https://blog', 'https://m.blog')
+        driver.execute_script('window.open("' + comentIDURL + '");')
+
     def commentLike(self, commentList, driver):
         for i in range(len(commentList)):
             commentLike = commentList[i]
@@ -101,12 +108,11 @@ class CommentCheck(QtWidgets.QDialog):
                     commentLike.click()
 
                 commentBox = commentLike.find_element(By.XPATH, '../../..')
-                commentID = commentBox.find_element(By.CLASS_NAME, 'u_cbox_info_main')
-                comentIDURL = commentID.get_attribute('outerHTML').split('"')[3]
-                comentIDURL = comentIDURL.replace('https://blog', 'https://m.blog')
-                driver.execute_script('window.open("' + comentIDURL + '");')
+                self.visitCommentUser(driver, commentBox)
+
                 driver.switch_to.window(driver.window_handles[0])
                 driver.switch_to.frame('mainFrame')
+
                 j = 0
                 while True:
                     if len(commentLike.get_attribute('outerHTML').split('class="')[1].split('"')[0].split(" ")) == 2:
@@ -116,7 +122,7 @@ class CommentCheck(QtWidgets.QDialog):
                         j += 1
 
                     if j > 100:
-                        logWriter.writeError("line 103 error")
+                        logWriter.writeError("error")
                         break
 
     def likePost(self, driver, windowCount):
@@ -135,37 +141,10 @@ class CommentCheck(QtWidgets.QDialog):
             driver.close()
 
     def searchLikeButton(self, driver):
-        error = False
         driver.switch_to.window(driver.window_handles[1])
-        try:
-            elem = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.CLASS_NAME, 'view_type_btn__z6Hlf')))
-        except:
-            logWriter.writeError("Lodding Fali : view_type_btn__z6Hlf")
-            error = True
-
-        time.sleep(0.2)
-        try:
-            elem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'btn__xjUPw')))
-        except:
-            logWriter.writeError("Lodding Fali : btn__xjUPw")
-            error = True
+        error = WebControl.showCardMobile(self= WebControl, driver= driver)
 
         if not error:
-            buttonList = driver.find_elements(By.CLASS_NAME, 'btn__xjUPw')
-            for button in buttonList:
-                if button.accessible_name == '카드형 보기':
-                    button.click()
-
-        try:
-            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'card__WjujK')))
-        except:
-            logWriter.writeError("Lodding Fali : card__WjujK")
-            error = True
-
-        if not error:
-            time.sleep(0.1)
-            driver.find_element(By.CLASS_NAME, 'card__WjujK').click()
             moblieURL = driver.current_url
             PCURL = moblieURL.replace('https://m.blog', 'https://blog')
             driver.get(url=PCURL)
