@@ -11,15 +11,15 @@ class LetterCount(QtWidgets.QDialog):
         self.letterCountUI.textEdit_letter.textChanged.connect(self.showCount)
 
     def showCount(self):
-        (a, b) = self.getCount()
-        self.letterCountUI.lbl_count.setText(str(a))
-        self.letterCountUI.lbl_postCount.setText(str(b))
+        (count, postCount, pureCount) = self.getCount()
+        self.letterCountUI.lbl_count.setText(str(count))
+        self.letterCountUI.lbl_postCount.setText(str(postCount))
 
     def getCount(self):
         text = self.letterCountUI.textEdit_letter.toPlainText()
         textCount = len(text)
-        pureTextCount = self.pureTextCount(text)
-        return (textCount, pureTextCount)
+        (postCount, pureCount) = self.pureTextCount(text)
+        return (textCount, postCount, pureCount)
 
     def pureTextCount(self, text):
         text = text.replace("￼", "")
@@ -44,9 +44,12 @@ class LetterCount(QtWidgets.QDialog):
             else:
                 i += 1
 
-        pureText = ''.join(textList)
-        pureTextCount = len(pureText)
-        return pureTextCount
+        postText = ''.join(textList)
+        postCount = len(postText)
+
+        pureText = postText.replace(' ', '')
+        pureCount = len(pureText)
+        return (postCount, pureCount)
 
     def removeGarbage(self, text):
         garbageList = ["사진 편집", "사진 삭제", "사진 설명",

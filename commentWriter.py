@@ -9,7 +9,6 @@ def write(driver, useAutoComment):
         text = CommentText.getCommentInfo(CommentText)
     else:
         text = "정성 가득 포스팅 잘 보고 갑니다~"
-    print("test")
     write2(driver, text)
 
 def write2(driver, text):
