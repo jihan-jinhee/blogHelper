@@ -144,6 +144,15 @@ class CommentCheck(QtWidgets.QDialog):
         driver.switch_to.window(driver.window_handles[1])
         error = WebControl.showCardMobile(self= WebControl, driver= driver)
 
+        try:
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'card__WjujK')))
+        except:
+            logWriter.writeError("Lodding Fali : card__WjujK")
+            error = True
+
+        time.sleep(0.1)
+        driver.find_element(By.CLASS_NAME, 'card__WjujK').click()
+
         if not error:
             moblieURL = driver.current_url
             PCURL = moblieURL.replace('https://m.blog', 'https://blog')

@@ -30,12 +30,19 @@ class WebControl:
                 if button.accessible_name == '카드형 보기':
                     button.click()
 
-        try:
-            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'card__WjujK')))
-        except:
-            logWriter.writeError("Lodding Fali : card__WjujK")
-            error = True
-
-        time.sleep(0.1)
-        driver.find_element(By.CLASS_NAME, 'card__WjujK').click()
         return error
+
+    def scrollDownDeep(self, driver):
+        last_height = driver.execute_script("return document.body.scrollHeight")
+        while True:
+            # 끝까지 스크롤 다운
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+            # 1초 대기
+            time.sleep(1)
+
+            # 스크롤 다운 후 스크롤 높이 다시 가져옴
+            new_height = driver.execute_script("return document.body.scrollHeight")
+            if new_height == last_height:
+                break
+            last_height = new_height

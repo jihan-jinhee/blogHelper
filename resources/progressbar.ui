@@ -135,7 +135,7 @@
          <enum>QFrame::Box</enum>
         </property>
         <property name="text">
-         <string>남은 시간</string>
+         <string>예상 남은 시간</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
