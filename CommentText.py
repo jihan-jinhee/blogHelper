@@ -16,7 +16,7 @@ class CommentText(QtWidgets.QDialog):
         self.saveInfo(comment)
 
     def saveInfo(self, comment):
-        File = open("commentText.txt", "w")
+        File = open("./resources/commentText.txt", "w")
         print(comment, file=File)
         self.commentTextUI.close()
 
@@ -34,7 +34,7 @@ class CommentText(QtWidgets.QDialog):
 
     def getCommentInfo(self):
         try:
-            File = open("commentText.txt", "r")
+            File = open("./resources/commentText.txt", "r")
         except:
             return None
 

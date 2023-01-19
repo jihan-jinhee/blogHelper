@@ -72,7 +72,7 @@ class AutoLogin(QtWidgets.QDialog):
             self.autoLoginUI.close()
             return
 
-        File = open("userInfo.txt", "w")
+        File = open("./resources/userInfo.txt", "w")
         securityPW = self.encrypt(PW)
         print(ID, file=File)
         print(securityPW, file=File)
@@ -80,7 +80,7 @@ class AutoLogin(QtWidgets.QDialog):
 
     def getUserInfo(self):
         try:
-            File = open("userInfo.txt", "r")
+            File = open("./resources/userInfo.txt", "r")
         except:
             return [None, None]
 
