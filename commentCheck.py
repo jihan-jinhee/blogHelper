@@ -94,7 +94,7 @@ class CommentCheck(QtWidgets.QDialog):
             try:
                 isLen1 = len(commentLike.get_attribute('outerHTML').split('class="')[1].split('"')[0].split(" ")) == 1
             except:
-                logWriter.writeError('commentLike error : ' + str(commentLike))
+                pass
 
             if isLen1:
                 # 좋아요
@@ -130,6 +130,11 @@ class CommentCheck(QtWidgets.QDialog):
             error = self.searchLikeButton(driver)
 
             if not error:
+                try:
+                    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'u_likeit_list_btn')))
+                except:
+                    logWriter.writeError("Lodding Fali : u_likeit_list_btn")
+
                 likeOfPost = driver.find_elements(By.CLASS_NAME, 'u_likeit_list_btn')
                 for j in range(len(likeOfPost)):
                     if likeOfPost[j].aria_role == 'generic':

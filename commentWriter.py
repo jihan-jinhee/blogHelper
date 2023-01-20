@@ -19,12 +19,13 @@ def write2(driver, text):
         commentUse = True
 
     if commentUse:
-        writeComment(commentWindow, text)
-        try:
-            commentSend = driver.find_element(By.CLASS_NAME, 'u_cbox_btn_upload')
-            commentSend.click()
-        except:
-            logWriter.writeError("Comment Send Fail")
+        error = writeComment(commentWindow, text)
+        if not error:
+            try:
+                commentSend = driver.find_element(By.CLASS_NAME, 'u_cbox_btn_upload')
+                commentSend.click()
+            except:
+                logWriter.writeError("Comment Send Fail")
 
 
 def findCommentLocation(driver):
@@ -47,7 +48,11 @@ def findCommentLocation(driver):
     return commentWindow
 
 def writeComment(commentWindow, text):
+    error = False
     try:
         commentWindow.send_keys(text)
     except:
         logWriter.writeError("Comment Write Fail : ")
+        error = True
+
+    return error
