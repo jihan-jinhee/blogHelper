@@ -35,6 +35,7 @@ class CommentCheck(QtWidgets.QDialog):
         self.naverLogin()
 
         self.driver.get(url=URL)
+        time.sleep(1)
         self.driver.switch_to.frame('mainFrame')
 
         postID = URL.split('/')[-1]
