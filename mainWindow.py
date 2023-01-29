@@ -6,6 +6,7 @@ from AutoLogin import AutoLogin
 from Purchase import Purchase
 from CommentText import CommentText
 from NeighborBlame import NeighborBlame
+from NeighborAdd import NeighborAdd
 import os
 
 class MainWindow(QtWidgets.QDialog):
@@ -21,6 +22,7 @@ class MainWindow(QtWidgets.QDialog):
         self.ui.btn_visitNeighbor.clicked.connect(self.btn_visitNeighborClickedUI)
         self.ui.btn_letterCount.clicked.connect(self.btn_letterCountClickedUI)
         self.ui.btn_neighborBlame.clicked.connect(self.btn_neighborBlameClickedUI)
+        self.ui.btn_neighborAdd.clicked.connect(self.btn_neighborAddClickedUI)
         self.ui.actionmenu1.setText("자동 로그인 설정")
         self.ui.actionmenu1.setCheckable(True)
         self.ui.actionmenu1.triggered.connect(self.autoLogin)
@@ -59,6 +61,11 @@ class MainWindow(QtWidgets.QDialog):
         neighborBlameUI = NeighborBlame(self)
         neighborBlameUI.fileChooseUI.show()
         neighborBlameUI.fileChooseUI.exec()
+
+    def btn_neighborAddClickedUI(self):
+        neighborAddUI = NeighborAdd(self)
+        neighborAddUI.neighborAddUI.show()
+        neighborAddUI.neighborAddUI.exec()
 
     def autoLogin(self):
         if self.ui.actionmenu1.isChecked():

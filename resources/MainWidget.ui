@@ -184,6 +184,24 @@ font: 9pt &quot;나눔고딕 ExtraBold&quot;;</string>
            </property>
           </widget>
          </item>
+         <item row="2" column="1">
+          <widget class="QPushButton" name="btn_neighborAdd">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color : rgb(85, 85, 85);
+color: rgb(255, 255, 255);
+font: 9pt &quot;나눔고딕 ExtraBold&quot;;</string>
+           </property>
+           <property name="text">
+            <string>이웃 추가</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
