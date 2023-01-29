@@ -38,7 +38,8 @@ class BlogNeighbor():
             i +=1
 
         for postNum in range(i):
-            driver.switch_to.window(driver.window_handles[postNum + 1])
+            driver.switch_to.window(driver.window_handles[1])
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'btn_like_more')))
             a = driver.find_elements(By.CLASS_NAME, 'btn_like_more')
             try:
                 a[0].click()
@@ -51,6 +52,8 @@ class BlogNeighbor():
             for user in userList:
                 if not user.text in neighborList:
                     neighborList.append(user.text)
+
+            driver.close()
         return set(neighborList)
 
     def loadNeighborList(self, filePath):

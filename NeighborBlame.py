@@ -3,6 +3,7 @@ from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QDesktopWidget
 from PyQt5.QtCore import Qt
 from blogNeighbor import BlogNeighbor
+from fileWrite import ExcelWrite
 
 class NeighborBlame(QtWidgets.QDialog):
     def __init__(self, parent=None):
@@ -32,11 +33,13 @@ class NeighborBlame(QtWidgets.QDialog):
         return fileChooseUI
 
     def btn_chooseClicked(self):
-        self.filepath = QtWidgets.QFileDialog.getOpenFileNames(self, 'Select File')[0][0]
-        if self.filepath is None or self.filepath == "" or self.filepath.split(".")[-1] != 'opml':
+        filepath = QtWidgets.QFileDialog.getOpenFileNames(self, 'Select File')[0]
+        if filepath == [] or filepath == "" or filepath[0].split(".")[-1] != 'opml':
             return
+        else:
+            self.filepath = filepath[0]
 
-        self.userID = self.filepath.split('/')[-1].split('.')[0]
+        self.userID = self.filepath.split('/')[-1].split('.')[0].split(" ")[0]
         self.neighborBlameUI.lineEdit_ID.setText(self.userID)
         self.fileChooseUI.label_filePath.setText(self.filepath)
         qr = self.neighborBlameUI.frameGeometry()
@@ -50,6 +53,7 @@ class NeighborBlame(QtWidgets.QDialog):
         postLikeList = BlogNeighbor.postLikeNeighbor(BlogNeighbor, ID, self.postSearchNum)
         neighborList = BlogNeighbor.loadNeighborList(BlogNeighbor, self.filepath)
         warnUser = neighborList - postLikeList
+        ExcelWrite.neighborListCSV(warnUser)
         print(warnUser)
 
     def timeCal(self):
