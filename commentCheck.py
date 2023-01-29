@@ -157,7 +157,13 @@ class CommentCheck(QtWidgets.QDialog):
             error = True
 
         time.sleep(0.1)
-        driver.find_element(By.CLASS_NAME, 'card__WjujK').click()
+        post = driver.find_elements(By.CLASS_NAME, 'card__WjujK')
+
+        try:
+            post[0].click()
+        except:
+            logWriter.writeError("card post 탐색 실패")
+            error = True
 
         if not error:
             moblieURL = driver.current_url
