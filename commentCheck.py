@@ -30,8 +30,6 @@ class CommentCheck(QtWidgets.QDialog):
         error = False
         URL = self.commentCheckUI.lineEdit_URL.text()
 
-        userID = URL.split('/')[3]
-        useAutoLogin = self.parent.ui.actionmenu1.isChecked()
         self.naverLogin()
 
         self.driver.get(url=URL)
