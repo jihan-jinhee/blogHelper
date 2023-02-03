@@ -2,12 +2,16 @@ import time
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QDesktopWidget
 from PyQt5.QtCore import Qt
+from AutoLogin import AutoLogin
+import csvManager
 from blogNeighbor import BlogNeighbor
-from fileWrite import ExcelWrite
+from csvManager import *
+from webControl import blogAdmin
 
 class NeighborBlame(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.parent = parent
         self.filePath = None
         self.fileChooseUI = uic.loadUi("./resources//fileChoose.ui")
         self.neighborBlameUI = uic.loadUi("./resources//NeighborBlame.ui")
@@ -17,12 +21,7 @@ class NeighborBlame(QtWidgets.QDialog):
     def setUp(self):
         self.fileChooseUI.btn_choose.clicked.connect(self.btn_chooseClicked)
         self.neighborBlameUI.btn_check.clicked.connect(self.btn_checkClicked)
-        self.neighborBlameUI.spinBox.valueChanged.connect(self.spinChanged)
-        self.spinChanged()
-
-    def spinChanged(self):
-        self.postSearchNum = self.neighborBlameUI.spinBox.value()
-        self.neighborBlameUI.label_processing.setText("0/" + str(self.postSearchNum))
+        self.neighborBlameUI.btn_deleteNeighbor.clicked.connect(self.btn_deleteNeighborClicked)
 
     def fileChooseUI(self, kind: str):
         fileChooseUI = uic.loadUi("./resources//fileChoose.ui")
@@ -48,13 +47,35 @@ class NeighborBlame(QtWidgets.QDialog):
         self.neighborBlameUI.show()
 
     def btn_checkClicked(self):
-        self.timeCal()
         ID = self.neighborBlameUI.lineEdit_ID.text()
-        postLikeList = BlogNeighbor.postLikeNeighbor(BlogNeighbor, ID, self.postSearchNum)
+        postSearchNum = self.neighborBlameUI.spinBox.value()
+        postLikeList = BlogNeighbor.postLikeNeighbor(BlogNeighbor, ID, postSearchNum)
         neighborList = BlogNeighbor.loadNeighborList(BlogNeighbor, self.filepath)
         warnUser = neighborList - postLikeList
-        ExcelWrite.neighborListCSV(warnUser)
+        csvWrite.neighborListCSV(warnUser)
         print(warnUser)
 
-    def timeCal(self):
-        pass
+    def btn_deleteNeighborClicked(self):
+        deleteNeighborCount = self.neighborBlameUI.spinBox_delete.value()
+        sucess = self.deleteNeighbor(deleteNeighborCount)
+        self.driver.close()
+
+    def login(self):
+        useAutoLogin = self.parent.ui.actionmenu1.isChecked()
+        self.driver = AutoLogin.naverLogin(AutoLogin, useAutoLogin)
+
+    def deleteNeighbor(self, neighborCount):
+        success = False
+        deleteList = self.readNeighborCSV()
+        if deleteList == None:
+            return success
+
+        self.login()
+        self.userID = self.neighborBlameUI.lineEdit_ID.text()
+        blogAdmin.moveBlogAdmin(blogAdmin, self.driver, self.userID)
+        success = blogAdmin.deleteNeighborInGroup(blogAdmin, self.driver, deleteList, neighborCount)
+        return success
+
+    def readNeighborCSV(self):
+        deleteList = csvManager.csvRead.neighborListCSV()
+        return deleteList
