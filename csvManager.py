@@ -1,7 +1,7 @@
 import os
 import _csv
 
-class ExcelWrite():
+class csvWrite():
     def neighborListCSV(neighborList: list):
         resultPath = os.getcwd() + "\\result"
         if not os.path.exists(resultPath):
