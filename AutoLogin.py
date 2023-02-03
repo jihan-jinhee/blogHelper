@@ -107,6 +107,7 @@ class AutoLogin(QtWidgets.QDialog):
             driver.implicitly_wait(2)
         except:
             logWriter.writeError("webdriver open fail")
+            return None
 
         self.login(self, driver, useAutoLogin)
         return driver
