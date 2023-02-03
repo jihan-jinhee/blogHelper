@@ -72,7 +72,7 @@ class NeighborAdd(QtWidgets.QDialog):
                 try:
                     WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.CLASS_NAME, 'radio_img1')))
                 except:
-                    if '이웃수가 초과' in driver.find_elements(By.CLASS_NAME, 'apollo_layer_container')[0].text:
+                    if '이웃수가 초과' in driver.find_elements(By.CLASS_NAME, 'apollo_layer_container')[0].text or '5,000명이 초과' in driver.find_elements(By.CLASS_NAME, 'apollo_layer_container')[0].text:
                         break
                     driver.find_elements(By.CLASS_NAME, 'btn__nsI4v')[0].click()
                     error = True
@@ -117,5 +117,3 @@ class NeighborAdd(QtWidgets.QDialog):
                         closeBtn[0].click()
                     except:
                         logWriter.writeError("btn click fail: add neighbor, btn_close")
-
-        pass

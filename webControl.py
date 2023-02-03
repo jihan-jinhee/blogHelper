@@ -68,6 +68,7 @@ class blogAdmin:
             try:
                 WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, 'search_input')))
                 box = driver.find_elements(By.CLASS_NAME, 'search_input')
+                box[0].clear()
                 box[0].send_keys(neighbor) # 검색창 클릭
             except:
                 proceed = False

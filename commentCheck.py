@@ -10,6 +10,7 @@ import logWriter
 import commentWriter
 import mainFunction
 from webControl import WebControl
+import random
 
 class CommentCheck(QtWidgets.QDialog):
     def __init__(self, parent = None):
@@ -105,6 +106,7 @@ class CommentCheck(QtWidgets.QDialog):
                 time.sleep(0.1)
                 try:
                     commentLike.click()
+                    time.sleep(random.random())
                 except:
                     commentList = driver.find_elements(By.CLASS_NAME, 'u_cbox_btn_recomm')
                     commentLike = commentList[i]
@@ -113,6 +115,8 @@ class CommentCheck(QtWidgets.QDialog):
 
                 commentBox = commentLike.find_element(By.XPATH, '../../..')
                 sucess = self.visitCommentUser(driver, commentBox)
+                time.sleep(0.1)
+                time.sleep(random.random())
                 if sucess:
                     driver.switch_to.window(driver.window_handles[0])
                     driver.switch_to.frame('mainFrame')
