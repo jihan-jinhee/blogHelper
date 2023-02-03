@@ -85,7 +85,12 @@ class CommentCheck(QtWidgets.QDialog):
         commentID = commentBox.find_element(By.CLASS_NAME, 'u_cbox_info_main')
         comentIDURL = commentID.get_attribute('outerHTML').split('"')[3]
         comentIDURL = comentIDURL.replace('https://blog', 'https://m.blog')
-        driver.execute_script('window.open("' + comentIDURL + '");')
+        try:
+            driver.execute_script('window.open("' + comentIDURL + '");')
+            return True
+        except:
+            return False
+
 
     def commentLike(self, commentList, driver):
         for i in range(len(commentList)):
@@ -107,22 +112,22 @@ class CommentCheck(QtWidgets.QDialog):
                     commentLike.click()
 
                 commentBox = commentLike.find_element(By.XPATH, '../../..')
-                self.visitCommentUser(driver, commentBox)
+                sucess = self.visitCommentUser(driver, commentBox)
+                if sucess:
+                    driver.switch_to.window(driver.window_handles[0])
+                    driver.switch_to.frame('mainFrame')
 
-                driver.switch_to.window(driver.window_handles[0])
-                driver.switch_to.frame('mainFrame')
+                    j = 0
+                    while True:
+                        if len(commentLike.get_attribute('outerHTML').split('class="')[1].split('"')[0].split(" ")) == 2:
+                            break
+                        else:
+                            time.sleep(0.1)
+                            j += 1
 
-                j = 0
-                while True:
-                    if len(commentLike.get_attribute('outerHTML').split('class="')[1].split('"')[0].split(" ")) == 2:
-                        break
-                    else:
-                        time.sleep(0.1)
-                        j += 1
-
-                    if j > 100:
-                        logWriter.writeError("error")
-                        break
+                        if j > 100:
+                            logWriter.writeError("error")
+                            break
 
     def likePost(self, driver, windowCount):
         for i in range(windowCount - 1):
@@ -138,9 +143,12 @@ class CommentCheck(QtWidgets.QDialog):
                 for j in range(len(likeOfPost)):
                     if likeOfPost[j].aria_role == 'generic':
                         if 'off' in likeOfPost[j].get_attribute('outerHTML').split('"')[1]:
-                            likeOfPost[j - 1].click()
-                            time.sleep(0.1)
-                            commentWriter.write(driver, self.useAutoComment)
+                            try:
+                                likeOfPost[j - 1].click()
+                                time.sleep(0.1)
+                                commentWriter.write(driver, self.useAutoComment)
+                            except:
+                                logWriter.writeError("likeOfPost click fail")
 
             driver.close()
 
