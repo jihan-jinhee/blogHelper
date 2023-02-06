@@ -5,11 +5,11 @@
 
 ### 기능
 * 사진에 워터마크 추가 (본인 전용. 타 워터마크 지원 X)
-* 댓글 확인
-* 이웃 글 방문
-* 글자수세기
-* 미방문이웃 확인 & 삭제
-* 이웃 추가
+* [댓글 확인](https://github.com/jihan-jinhee/blogHelper/blob/master/README.md#%EB%8C%93%EA%B8%80-%ED%99%95%EC%9D%B8-%EA%B8%B0%EB%8A%A5)
+* [이웃 글 방문](https://github.com/jihan-jinhee/blogHelper/blob/master/README.md#%EC%9D%B4%EC%9B%83-%EA%B8%80-%EB%B0%A9%EB%AC%B8)
+* [글자수세기](https://github.com/jihan-jinhee/blogHelper/blob/master/README.md#%EA%B8%80%EC%9E%90%EC%88%98%EC%84%B8%EA%B8%B0)
+* [미방문이웃 확인 & 삭제](https://github.com/jihan-jinhee/blogHelper/blob/master/README.md#%EB%AF%B8%EB%B0%A9%EB%AC%B8%EC%9D%B4%EC%9B%83-%ED%99%95%EC%9D%B8-%EA%B8%B0%EB%8A%A5)
+* [이웃 추가](https://github.com/jihan-jinhee/blogHelper/blob/master/README.md#%EC%9D%B4%EC%9B%83-%EC%B6%94%EA%B0%80-%EA%B8%B0%EB%8A%A5)
 
 ## 메뉴바
 ![image](https://user-images.githubusercontent.com/74603608/216959070-af879fef-1a9f-4814-be97-5a9b0ae68020.png)
@@ -84,7 +84,7 @@ URL 입력 후 실행
 ctrl+V(붙여넣기)
 총 글자수와, 순수 글자수(사진, 영상 등을 제외한 글자)가 나옴.
 
-# 미방문이웃 확인 기능
+# 미방문이웃 확인& 기능
 
 1. .opml 파일 추출. (블로그 관리, 열린이웃-이웃 그룹관리-이웃그룹-검사할그룹선택-내보내기)
 
