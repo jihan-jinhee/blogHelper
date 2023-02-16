@@ -1,4 +1,6 @@
 # blogHelper
+### 일부 유료 기능은 잠겨 있습니다. 문의 (e-mail: hanjinhee502@naver.com).
+### 현재 개발, 유지보수 중단되어 대응에 오랜 시간이 걸리고 있습니다.
 
 ## 네이버 블로그 활동을 보조하는 목적으로 만든 프로그램
 ![image](https://user-images.githubusercontent.com/74603608/216958726-9dbee74b-0ed8-471d-b428-d601ae890ff5.png)
