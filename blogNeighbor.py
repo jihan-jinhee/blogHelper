@@ -41,17 +41,18 @@ class BlogNeighbor():
             driver.switch_to.window(driver.window_handles[1])
             WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'btn_like_more')))
             a = driver.find_elements(By.CLASS_NAME, 'btn_like_more')
-            try:
-                a[0].click()
-            except:
-                a[1].click()
+            if a != []:
+                try:
+                    a[0].click()
+                except:
+                    a[1].click()
 
-            WebControl.scrollDownDeep(self=WebControl, driver=driver)
+                WebControl.scrollDownDeep(self=WebControl, driver=driver)
 
-            userList = driver.find_elements(By.CLASS_NAME, 'blogname__PmDH5')
-            for user in userList:
-                if not user.text in neighborList:
-                    neighborList.append(user.text)
+                userList = driver.find_elements(By.CLASS_NAME, 'blogname__PmDH5')
+                for user in userList:
+                    if not user.text in neighborList:
+                        neighborList.append(user.text)
 
             driver.close()
         return set(neighborList)

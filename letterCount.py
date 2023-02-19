@@ -52,8 +52,8 @@ class LetterCount(QtWidgets.QDialog):
         return (postCount, pureCount)
 
     def removeGarbage(self, text):
-        garbageList = ["사진 편집", "사진 삭제", "사진 설명", "이미지 썸네일", "방문자리뷰 ", "블로그리뷰 "
-                       "삭제삭제", "작게문서", "너비문서 너비옆트임옆트임", "업로드 준비중입니다.", "이미지 삭제"]
+        garbageList = ["사진 편집", "사진 삭제", "사진 설명", "이미지 썸네일", "방문자리뷰 ", "블로그리뷰 ", "대표이미지",
+                       "삭제삭제", "작게문서", "너비문서 너비옆트임옆트임", "업로드 준비중입니다.", "이미지 삭제", "동영상 정보"]
         for garbage in garbageList:
             if garbage in text:
                 return True
