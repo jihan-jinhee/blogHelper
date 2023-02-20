@@ -153,7 +153,7 @@ class CommentCheck(QtWidgets.QDialog):
                                 commentWriter.write(driver, self.useAutoComment)
                             except:
                                 logWriter.writeError("likeOfPost click fail")
-
+            time.sleep(0.5)
             driver.close()
 
     def searchLikeButton(self, driver):
