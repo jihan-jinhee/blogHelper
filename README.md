@@ -59,10 +59,13 @@ URL 입력 후 실행
 ![image](https://user-images.githubusercontent.com/74603608/216962565-69523176-5151-4b04-96b0-9053d1f7e744.png)
 
 # 이웃 글 방문
+* 이웃이 1명이라도 있어야 합니다. (권장 1000명 이상이라.. 하루 1~2번 돌릴 용으로 개발)
+* 이웃이 너무 적을 경우, 자동 종료가 안될 수 있습니다. 프로그램이 멈춰있다 싶으면 수동 종료해주세요.
+
 
 ![image](https://user-images.githubusercontent.com/74603608/216962730-dbbc4088-121c-484d-bb1e-831926224a15.png)
 
-시작하면 멈출 수 없음 (230206 기준)
+시작하면 멈출 수 없습니다. (230206 기준)
 
 ![image](https://user-images.githubusercontent.com/74603608/216962908-94be9662-1a39-4d30-9e33-3ee529847dd5.png)
 
