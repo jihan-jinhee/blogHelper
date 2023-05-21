@@ -38,9 +38,15 @@ class BlogNeighbor():
             i +=1
 
         for postNum in range(i):
+            if len(driver.window_handles) == 1:
+                break
             driver.switch_to.window(driver.window_handles[1])
-            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'btn_like_more')))
-            a = driver.find_elements(By.CLASS_NAME, 'btn_like_more')
+            try:
+                WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'btn_like_more')))
+                a = driver.find_elements(By.CLASS_NAME, 'btn_like_more')
+            except:
+                logWriter.writeError("포스팅 오픈 에러 : " + str(driver.current_url))
+
             if a != []:
                 try:
                     a[0].click()

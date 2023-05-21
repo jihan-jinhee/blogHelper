@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -16,7 +18,8 @@ def write2(driver, text):
 
     if commentUse:
         commentWindow = findCommentLocation(driver)
-        commentUse = True
+        if not commentWindow:
+            commentUse = False
 
     if commentUse:
         error = writeComment(commentWindow, text)
@@ -24,6 +27,7 @@ def write2(driver, text):
             try:
                 commentSend = driver.find_element(By.CLASS_NAME, 'u_cbox_btn_upload')
                 commentSend.click()
+                time.sleep(2)
             except:
                 logWriter.writeError("Comment Send Fail")
 

@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
 import logWriter
 import time
 
@@ -59,44 +60,63 @@ class blogAdmin:
         a[0].click()
 
     def deleteNeighborInGroup(self, driver, deleteList, neighborCount):
+        count = 0
         i = 0
-        for neighbor in deleteList:
-            if i >= neighborCount:
+        while i < len(deleteList):
+            if count >= neighborCount:
                 break
             proceed = True
+
+            if "페페의 냠냠 아일랜드" in deleteList[i]:
+                proceed = False
+
+            if len(deleteList[i]) < 4:
+                proceed = False
             
             try:
-                WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, 'search_input')))
-                box = driver.find_elements(By.CLASS_NAME, 'search_input')
+                WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, 'search_input__OUlaE')))
+                box = driver.find_elements(By.CLASS_NAME, 'search_input__OUlaE')
                 box[0].clear()
-                box[0].send_keys(neighbor) # 검색창 클릭
+                box[0].send_keys(deleteList[i]) # 검색창 클릭
+                box[0].send_keys(Keys.RETURN)
             except:
                 proceed = False
                 logWriter.writeError("neighbor delete: 검색창 클릭 실패")
                 
-            if proceed:
-                try:
-                    WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, 'sim')))
-                    btn_search = driver.find_elements(By.CLASS_NAME, 'sim')
-                    btn_search[0].click()
-        
-                    time.sleep(0.5)
-                except:
-                    proceed = False
-                    logWriter.writeError("neighbor delete: 검색 버튼 탐색 실패")
+            # if proceed:
+            #     try:
+            #         WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, 'sim')))
+            #         btn_search = driver.find_elements(By.CLASS_NAME, 'sim')
+            #         btn_search[0].click()
+            #
+            #         time.sleep(0.5)
+            #     except:
+            #         proceed = False
+            #         logWriter.writeError("neighbor delete: 검색 버튼 탐색 실패")
                     
             if proceed:
                 try:
-                    btn_del = driver.find_elements(By.XPATH, '//*[@id="ct"]/div[4]/div/ul/buddy/li/div[1]/div[2]/a[2]')
-                    btn_del[0].click()
+                    WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, 'more_btn_icon__rZd7v')))
+                    btn_more = driver.find_elements(By.CLASS_NAME, 'more_btn_icon__rZd7v')
+                    btn_more[0].click()
                 except:
                     proceed = False
+                    i += 10
                     logWriter.writeError("neighbor delete: 검색 실패 (정상일수도)")
-            
+
             if proceed:
                 try:
-                    WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, 'r2')))
-                    neighborDelteCheckBox = driver.find_elements(By.ID, 'r2')
+                    WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, 'menu_item___2HmB')))
+                    btn_delete = driver.find_elements(By.CLASS_NAME, 'menu_item___2HmB')
+                    btn_delete[3].click()
+                except:
+                    proceed = False
+                    logWriter.writeError("delete button search fail")
+
+            if proceed:
+                try:
+                    WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//label[contains(text(), '서로이웃과 이웃을 모두 취소합니다.')]")))
+                    neighborDelteCheckBox = driver.find_elements(By.XPATH, "//label[contains(text(), '서로이웃과 이웃을 모두 취소합니다.')]")
                     neighborDelteCheckBox[0].click()
                 except:
                     proceed = False
@@ -121,6 +141,8 @@ class blogAdmin:
                     logWriter.writeError("neighbor delete: 삭제 완료 버튼 탐색 실패")
 
             if proceed:
-                i += 1
+                count += 1
+
+            i += 1
 
         return True

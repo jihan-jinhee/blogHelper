@@ -134,6 +134,7 @@ class CommentCheck(QtWidgets.QDialog):
                             break
 
     def likePost(self, driver, windowCount):
+        useComment = True
         for i in range(windowCount - 1):
             error = self.searchLikeButton(driver)
 
@@ -149,12 +150,16 @@ class CommentCheck(QtWidgets.QDialog):
                         if 'off' in likeOfPost[j].get_attribute('outerHTML').split('"')[1]:
                             try:
                                 likeOfPost[j - 1].click()
-                                time.sleep(0.1)
-                                commentWriter.write(driver, self.useAutoComment)
+                                if useComment == True:
+                                    time.sleep(0.1)
+                                    commentWriter.write(driver, self.useAutoComment)
                             except:
                                 logWriter.writeError("likeOfPost click fail")
-            time.sleep(0.5)
-            driver.close()
+            try:
+                driver.close()
+            except:
+                useComment = False
+                driver.close()
 
     def searchLikeButton(self, driver):
         driver.switch_to.window(driver.window_handles[1])
