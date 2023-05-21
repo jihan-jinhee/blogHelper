@@ -59,10 +59,13 @@ URL 입력 후 실행
 ![image](https://user-images.githubusercontent.com/74603608/216962565-69523176-5151-4b04-96b0-9053d1f7e744.png)
 
 # 이웃 글 방문
+* 이웃이 1명이라도 있어야 합니다. (권장 1000명 이상이라.. 하루 1~2번 돌릴 용으로 개발)
+* 이웃이 너무 적을 경우, 자동 종료가 안될 수 있습니다. 프로그램이 멈춰있다 싶으면 수동 종료해주세요.
+
 
 ![image](https://user-images.githubusercontent.com/74603608/216962730-dbbc4088-121c-484d-bb1e-831926224a15.png)
 
-시작하면 멈출 수 없음 (230206 기준)
+시작하면 멈출 수 없습니다. (230206 기준)
 
 ![image](https://user-images.githubusercontent.com/74603608/216962908-94be9662-1a39-4d30-9e33-3ee529847dd5.png)
 
@@ -117,15 +120,56 @@ ctrl+V(붙여넣기)
 
 # 이웃 추가 기능
 
+* 사전 작업으로, 이웃 그룹을 생성해주어야 합니다.
+
+![image](https://user-images.githubusercontent.com/74603608/220338556-3ffcac43-93d4-4039-b491-c39f398a6edc.png)
+
+1. 네이버 블로그로 이동해서, 관리 페이지에 들어갑니다.
+
+![image](https://user-images.githubusercontent.com/74603608/220338798-edc891ef-10b1-4a0b-8a2b-743b3c09125d.png)
+
+2. 관리 - 기본 설정 - 열린 이웃 - 이웃그룹관리에 들어갑니다.
+
+![image](https://user-images.githubusercontent.com/74603608/220338949-f47f320d-9289-4d17-9bd0-02ea08248184.png)
+
+3. 이웃그룹 - +그룹추가를 누릅니다.
+
+![image](https://user-images.githubusercontent.com/74603608/220339096-f3f8a1dd-de70-4609-b861-d72d81e30973.png)
+
+4. 그룹을 추가합니다. 이름, 공개 설정은 자유입니다.
+
+![image](https://user-images.githubusercontent.com/74603608/220339170-0d893615-fccd-4bc5-94ed-31f8a8a61e07.png)
+
+5. 그룹이 만들어지면, 이 그룹에 서로이웃들을 추가하게 됩니다.
+
+![image](https://user-images.githubusercontent.com/74603608/220339998-5531c379-c537-481b-adf1-bddc86507899.png)
+
+6. 그룹이 많으면, 제일 상단에 있는 그룹에만 이웃을 추가하게 됩니다.
+
+![image](https://user-images.githubusercontent.com/74603608/220340149-7b4a0659-01f6-490e-ad0e-faffd89cd07d.png)
+
+7. 이웃 그룹당, 인원 제한이 있습니다(500명). 따라서, 500명이 되어 더 이상 이웃 추가가 되지 않는다면,
+   그룹 순서를 변경해주어야 합니다.
+
+
+### 이웃 추가 기능 설명
+
 ![image](https://user-images.githubusercontent.com/74603608/216964803-e4f21860-7990-42a0-b581-194dc96bc36b.png)
 
-좋아요가 많은 포스팅의 URL을 입력하는 것이 유리.
+게시물을 좋아요 한 계정들에게 서로이웃신청을 보내게 됩니다.
+따라서, 좋아요가 많은 포스팅의 URL을 입력하는 것이 유리합니다.
 
 ![image](https://user-images.githubusercontent.com/74603608/216964992-958832dd-76a7-488a-8187-462ef7955cd3.png)
 
-이 인원에게 서로이웃 신청을 보내게 됨.
-(단, 네이버에서 막아놓은 하루 신청 제한에 도달하면 중지)
+이렇게, 게시물을 좋아요 누른 인원들에게 서로이웃 신청을 보내게 됩니다.
+(단, 네이버에서 막아놓은 하루 신청 제한에 도달하면 중지됩니다.)
 
+### 서로이웃 신청이 진행되었나 확인 방법
+![image](https://user-images.githubusercontent.com/74603608/220340376-1d21f4be-a38d-4071-a1fd-56a5166877ea.png)
+
+블로그 관리 - 기본 설정 - 열린 이웃 - 서로이웃 신청 - 보낸 신청
+에서 확인 가능합니다.
+요청이 승인되야, 최종적으로: 열린 이웃 - 이웃그룹관리에 서로이웃이 추가됩니다.
 
 
 
