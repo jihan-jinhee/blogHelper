@@ -1,0 +1,12 @@
+/.idea/.gitignore
+/.idea/.name
+/.idea/blogHelper.iml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
+/log/*
+/test folder/*
+/dist
+/__pycache__/*
+build/*

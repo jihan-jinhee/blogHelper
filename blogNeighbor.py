@@ -2,6 +2,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium import webdriver
+
+from ChromeVersion import ChromeVersion
 from webControl import WebControl
 from webdriver_manager.chrome import ChromeDriverManager
 import logWriter
@@ -15,7 +17,16 @@ class BlogNeighbor():
     def postLikeNeighbor(self, ID, postNum):
         useAutoLogin = False
         neighborList = []
-        driver = webdriver.Chrome(ChromeDriverManager().install())
+        from selenium.webdriver.chrome.service import Service
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option("useAutomationExtension", False)
+        chromeVersion = ChromeVersion.getChromeVersionInfo(ChromeVersion).replace("\n", "").replace(" ", "")
+        chrome_driver_path = ChromeDriverManager(version=chromeVersion).install()
+        service = Service(executable_path=chrome_driver_path)
+        driver = webdriver.Chrome(service=service, options=options)
+        # driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.implicitly_wait(2)
         URL = 'https://m.blog.naver.com/' + str(ID)
         driver.get(url=URL)

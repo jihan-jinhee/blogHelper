@@ -298,6 +298,7 @@ font: 9pt &quot;나눔고딕 ExtraBold&quot;;</string>
     </property>
     <addaction name="actionmenu1"/>
     <addaction name="actionmenu2"/>
+    <addaction name="actionmenu3"/>
    </widget>
    <addaction name="menu"/>
   </widget>
@@ -310,6 +311,11 @@ font: 9pt &quot;나눔고딕 ExtraBold&quot;;</string>
   <action name="actionmenu2">
    <property name="text">
     <string>menu2</string>
+   </property>
+  </action>
+  <action name="actionmenu3">
+   <property name="text">
+    <string>menu3</string>
    </property>
   </action>
  </widget>

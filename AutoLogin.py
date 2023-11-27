@@ -7,6 +7,8 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 import pyperclip
 import logWriter
+from ChromeVersion import ChromeVersion
+
 
 class AutoLogin(QtWidgets.QDialog):
     def __init__(self, parent=None):
@@ -103,7 +105,16 @@ class AutoLogin(QtWidgets.QDialog):
     def naverLogin(self, useAutoLogin):
         URL = "https://blog.naver.com"
         try:
-            driver = webdriver.Chrome(ChromeDriverManager().install())
+            from selenium.webdriver.chrome.service import Service
+            options = webdriver.ChromeOptions()
+            options.add_experimental_option('excludeSwitches', ['enable-logging'])
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option("useAutomationExtension", False)
+            chromeVersion = ChromeVersion.getChromeVersionInfo(ChromeVersion).replace("\n", "").replace(" ", "")
+            chrome_driver_path = ChromeDriverManager(version=chromeVersion).install()
+            service = Service(executable_path=chrome_driver_path)
+            driver = webdriver.Chrome(service=service, options=options)
+            # driver = webdriver.Chrome(ChromeDriverManager().install())
             driver.implicitly_wait(2)
         except:
             logWriter.writeError("webdriver open fail")

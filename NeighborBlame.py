@@ -74,8 +74,12 @@ class NeighborBlame(QtWidgets.QDialog):
         self.userID = self.neighborBlameUI.lineEdit_ID.text()
         blogAdmin.moveBlogAdmin(blogAdmin, self.driver, self.userID)
         success = blogAdmin.deleteNeighborInGroup(blogAdmin, self.driver, deleteList, neighborCount)
+        self.EditNeighborCSV(neighborCount)
         return success
 
     def readNeighborCSV(self):
         deleteList = csvManager.csvRead.neighborListCSV()
         return deleteList
+
+    def EditNeighborCSV(self, neighborCount):
+        csvManager.csvWrite.deleteNeighborCSV(neighborCount)

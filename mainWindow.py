@@ -5,6 +5,7 @@ from letterCount import LetterCount
 from AutoLogin import AutoLogin
 from Purchase import Purchase
 from CommentText import CommentText
+from ChromeVersion import ChromeVersion
 from NeighborBlame import NeighborBlame
 from NeighborAdd import NeighborAdd
 import os
@@ -29,6 +30,8 @@ class MainWindow(QtWidgets.QDialog):
         self.ui.actionmenu2.setText("댓글 문구 설정")
         self.ui.actionmenu2.setCheckable(True)
         self.ui.actionmenu2.triggered.connect(self.commentText)
+        self.ui.actionmenu3.setText("크롬 버전 설정")
+        self.ui.actionmenu3.triggered.connect(self.chromeVersion)
         self.ui.label_watermark.mousePressEvent = self.openWeb
 
     def btn_watermarkClickedUI(self):
@@ -86,6 +89,11 @@ class MainWindow(QtWidgets.QDialog):
                 self.ui.actionmenu2.setChecked(False)
         else:
             pass
+
+    def chromeVersion(self):
+        ChromeVersionUI = ChromeVersion(self)
+        ChromeVersionUI.ChromeVersionUI.show()
+        ChromeVersionUI.ChromeVersionUI.exec()
 
     def openWeb(self, event):
         Purchase(self).openContact()

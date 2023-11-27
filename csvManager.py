@@ -17,6 +17,31 @@ class csvWrite():
 
         f.close()
 
+    def deleteNeighborCSV(Count: int):
+        resultPath = os.getcwd() + "\\result"
+        if os.path.exists(resultPath):
+            with open('./result/neighbor.csv', 'r') as file:
+                # CSV 파일 읽기
+                reader = _csv.reader(file)
+
+                # 특정 행을 제외한 나머지 행들을 저장할 리스트
+                rows = []
+
+                # 각 행에 대해 작업 수행
+                i = 0
+                for row in reader:
+                    i += 1
+                    if i > Count:
+                        rows.append(row)
+
+            # 수정된 데이터로 CSV 파일 쓰기
+            with open('./result/neighbor.csv', 'w', newline='') as file:
+                # CSV 파일 작성
+                writer = _csv.writer(file)
+
+                # 수정된 데이터 작성
+                writer.writerows(rows)
+
 class csvRead():
     def neighborListCSV():
         neighborListCSVPath = os.getcwd() + "\\result\\neighbor.csv"

@@ -101,7 +101,6 @@ class blogAdmin:
                     btn_more[0].click()
                 except:
                     proceed = False
-                    i += 10
                     logWriter.writeError("neighbor delete: 검색 실패 (정상일수도)")
 
             if proceed:
